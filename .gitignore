@@ -1,0 +1,19 @@
+# 原始学术PDF和图片文件不推送到仓库（体积大、非网站必需）
+*.pdf
+*.PDF
+*.docx
+*.DOCX
+*.JPG
+*.jpg
+*.png
+*.PNG
+*.gif
+*.GIF
+*.html.bak
+
+# 系统文件
+.workbuddy/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini

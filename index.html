@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Notes on Grasshoppers · 野外笔记 · 文献瀑布流</title>
+<style>
+  :root{
+    --bg:#f6f3ee;
+    --text:#2c2416;
+    --muted:#776b5a;
+    --accent:#9b6b21;
+    --accent-dark:#6b4a14;
+    --border:#d4cdbf;
+    --card-bg:#fffcf5;
+    --note-bg:#f8f4e8;
+    --link:#8b5e14;
+    --warm:#c4732a;
+    --green:#4a6741;
+    --tag-phys:#c0392b;
+    --tag-eco:#e67e22;
+    --tag-evo:#8e44ad;
+    --tag-beh:#2c5aa0;
+    --tag-gen:#16a085;
+    --tag-meta:#7f8c8d;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;padding:0;
+    font-family:"Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+    font-size:16px;line-height:1.75;color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  .hero{background:linear-gradient(175deg,#3e2e0e 0%,#5c4320 40%,#836b3a 100%);color:#f0e6d0;padding:56px 0 40px;border-bottom:1px solid #3e2e0e;text-align:center}
+  .hero h1{font-size:32px;font-weight:700;margin:0 0 6px;letter-spacing:1px;font-family:"Noto Serif SC",serif}
+  .hero .sub{margin:0;font-size:14px;opacity:0.78;font-weight:300}
+  .hero .stats{margin-top:16px;font-size:12px;opacity:0.6;display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+  .filter-bar{max-width:760px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--border)}
+  .filter-btn{font-size:12px;padding:5px 14px;border-radius:14px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap;font-family:inherit}
+  .filter-btn:hover{border-color:var(--accent);color:var(--accent-dark)}
+  .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .filter-btn .count{font-size:10px;opacity:0.7;margin-left:4px}
+  .feed{max-width:760px;margin:0 auto;padding:20px 24px 80px}
+  .card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:16px;cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,0.04);position:relative}
+  .card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);transform:translateY(-1px);border-color:var(--accent)}
+  .card.expanded{box-shadow:0 6px 18px rgba(0,0,0,0.1);border-color:var(--accent)}
+  .card .card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .card .card-title{font-size:17px;font-weight:600;color:var(--text);margin:0;line-height:1.4;flex:1}
+  .card .card-meta{font-size:11.5px;color:var(--muted);white-space:nowrap;margin-top:2px;line-height:1.5;text-align:right}
+  .card .card-year{font-size:17px;font-weight:700;color:var(--accent)}
+  .card .card-journal{font-size:11px}
+  .card .card-snippet{font-size:14px;color:var(--muted);margin:8px 0 0;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card .card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  .tag{font-size:10.5px;padding:2px 9px;border-radius:10px;font-weight:600;letter-spacing:0.3px}
+  .tag.phys{background:#fdecea;color:var(--tag-phys);border:1px solid #f5c6cb}
+  .tag.eco{background:#fef3e9;color:var(--tag-eco);border:1px solid #fad7b5}
+  .tag.evo{background:#f4ecf7;color:var(--tag-evo);border:1px solid #d7bde2}
+  .tag.beh{background:#eaf2f8;color:var(--tag-beh);border:1px solid #aed6f1}
+  .tag.gen{background:#e8f6f3;color:var(--tag-gen);border:1px solid #a3e4d7}
+  .tag.meta{background:#f2f3f4;color:var(--tag-meta);border:1px solid #d5dbdb}
+  .card .card-body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:14.5px;line-height:1.8}
+  .card.expanded .card-body{display:block}
+  .card .card-body .note{background:var(--note-bg);border-left:3px solid var(--accent);padding:10px 14px;margin:10px 0;border-radius:0 4px 4px 0;font-size:13.5px}
+  .card .card-body .source{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:8px;border-top:1px dotted var(--border);padding-top:8px}
+  .card .card-body a{color:var(--link);font-size:12px;word-break:break-all}
+  .card .expand-hint{font-size:11px;color:var(--accent);margin-top:6px;opacity:0.7}
+  .card.expanded .expand-hint{display:none}
+  .load-more{text-align:center;padding:10px 0 40px}
+  .load-more button{font-size:14px;padding:10px 32px;border-radius:20px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-family:inherit;transition:all .2s}
+  .load-more button:hover{background:var(--accent);color:#fff}
+  .load-more .counter{font-size:12px;color:var(--muted);margin-top:6px}
+  .progress{text-align:center;font-size:12px;color:var(--muted);padding:8px 0 0}
+  footer.site{padding:24px 0 32px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);text-align:center;margin-top:20px}
+  footer.site a{color:var(--link)}
+  .card.hidden-card{display:none}
+  .sentinel{height:60px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+  .sentinel .spinner{display:none;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;margin-right:8px}
+  .sentinel.loading .spinner{display:inline-block}
+  .sentinel.done{display:none}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .shuffle-btn{display:block;margin:0 auto 16px;font-size:13px;padding:8px 20px;border-radius:16px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-family:inherit;transition:all .2s}
+  .shuffle-btn:hover{background:var(--accent);color:#fff}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c2416;color:#f0e6d0;padding:10px 20px;border-radius:20px;font-size:13px;z-index:100;opacity:0;transition:opacity .3s;pointer-events:none}
+  .toast.show{opacity:1}
+    .hero h1{font-size:24px}
+    body{font-size:15px}
+    .card .card-title{font-size:15px}
+    .feed{padding:12px 10px 60px}
+    .card{padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>🦗 Field Notes on Grasshoppers</h1>
+  <p class="sub">近十年蝗虫研究 · 观察笔记式整理 · 点击卡片展开详情 · 下滑随机推送</p>
+  <div class="stats">
+    <span>📝 <strong id="heroTotal">50</strong> 篇 · 每次推送 5 篇</span>
+    <span>📅 2014–2026</span>
+    <span>🔀 随机顺序</span>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">全部 <span class="count" id="filterAllCount">50</span></button>
+  <button class="filter-btn" data-filter="phys">生理学</button>
+  <button class="filter-btn" data-filter="eco">生态学</button>
+  <button class="filter-btn" data-filter="evo">进化</button>
+  <button class="filter-btn" data-filter="beh">行为学</button>
+  <button class="filter-btn" data-filter="gen">基因组</button>
+  <button class="filter-btn" data-filter="meta">综述/方法</button>
+</div>
+
+<div class="feed" id="feed">
+
+<!-- ================================================ -->
+<!--  以下所有卡片均以"观察/现象/问题"开头            -->
+<!--  学术发现自然融入，不直接复制摘要                -->
+<!-- ================================================ -->
+
+<!-- 1: 2025 Science · 蝗虫行军不靠跟风 -->
+<article class="card" data-tags="beh,phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">一群蝗虫朝同一个方向走——但没人告诉它们该往哪走</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">Science</span></div>
+  </div>
+  <p class="card-snippet">在非洲的草地上经常能看到一道移动的黑线——那是上千只不会飞的若虫蝗虫排成纵队在前进。我一直以为它们和鱼群一样，是靠盯着旁边个体的方向来对齐的。但 Science 今年的研究发现，这个直觉是错的。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>经典的动物集体运动理论——无论是鸟群、鱼群还是行军蚁——都假设个体通过"对齐邻居方向"来维持群体协调。但研究人员把沙漠蝗若虫放进虚拟现实环境中发现：蝗虫<strong>根本不在乎邻居往哪个方向</strong>。它们对移动光点（模拟同伴）确实有视觉运动响应——但那是一种先天反射，并没有用来指导自己的社交决策。</p>
+    <p>那它们怎么做到整齐划一的行军？</p>
+    <div class="note">每只蝗虫在大脑中维持对同伴的<strong>方位表征</strong>，然后通过内部的"共识"过程做出方向选择——就像一个微型民主投票系统。不是跟着走，是"商量"出了方向。</div>
+    <p>这个结论挑战了几十年来关于"从无序中产生有序"的基本假设。蝗虫的行军可能比我们以为的要复杂得多——它涉及某种我们还没完全理解的<strong>内部认知过程</strong>。</p>
+    <p class="source">Science 2025 · DOI: 10.1126/science.adq7832 · 利用野外 + 实验室 + VR 三层面实验</p>
+  </div>
+</article>
+
+<!-- 2: 2022 PNAS · 飞行肌的悖论 -->
+<article class="card" data-tags="phys,beh" data-year="2022">
+  <div class="card-header">
+    <h2 class="card-title">散居蝗虫跑得快但跑不远，群居蝗虫慢悠悠却能飞一天</h2>
+    <div class="card-meta"><span class="card-year">2022</span><br><span class="card-journal">PNAS</span></div>
+  </div>
+  <p class="card-snippet">如果你把一只散居型的蝗虫和一只群居型的蝗虫分别绑到飞行磨上，你会发现散居型的前 15 分钟飞得又快又猛——然后就不行了。群居型呢，起步慢吞吞，但可以一口气飞 10 个小时。这完全反直觉。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>按照常识，耐力好的运动员肌肉里的有氧代谢能力应该更强。但在蝗虫身上，Du 等人发现群居型的飞行肌里<strong>氧化代谢相关酶的活性反而更低</strong>——转录水平也低，酶活性也低。</p>
+    <p>那它们凭什么能撑那么久？</p>
+    <div class="note">答案在于<strong>氧化损伤的管控</strong>。散居型飞一小时后，肌肉里过氧化氢飙升，谷胱甘肽等抗氧化分子被耗尽——相当于"爆缸"了。群居型的飞行肌不会产生这种氧化崩溃。它们的肌肉被重新配置成了低功率但高耐久的设计——就像一辆本来就限速但油箱特别大的车。</div>
+    <p>这个发现在脊椎动物里没有对应。脊椎动物的速度和耐力通常正相关。但蝗虫的飞行肌是纯有氧的——没有无氧爆发模式——所以它走出了一条完全不同的 trade-off 路径。</p>
+    <p class="source">Du et al. 2022 · PNAS · PMC8812529</p>
+  </div>
+</article>
+
+<!-- 3: 2021 PLoS CB · 食物分布诱发群居 -->
+<article class="card" data-tags="beh,eco" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">如果你把草剪成合适的大小和间距，蝗虫就会开始抱团</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">PLOS Comp. Biol.</span></div>
+  </div>
+  <p class="card-snippet">想象一块草原上草长得不太均匀——有的地方秃了，有的地方还留着几丛。散居型的蝗虫本来各自躲着对方，但为了找吃的全挤到了仅剩的那几丛草附近。然后，就在挤在一起的过程中，它们开始变了。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>Georgiou 等人建了一个数学模型来精确描述这个过程。他们没有只考虑蝗虫密度，而是加入了食物分布这个变量。</p>
+    <div class="note">模型显示：食物斑块的大小和间距有一个"最优值"。在这个最优值附近，群体形成的速度最快、所需最低密度也最低、群居化率也最高。而且一旦形成了群，在斑块状食物环境里<strong>群居型的觅食效率高于独居型</strong>——这是抱团行为的直接收益。</div>
+    <p>以前我们说相变的触发因素，总是提"后腿被碰到"或者"看到别的蝗虫"。但食物的空间格局——这个比肢体接触更宏观的环境因素——可能才是第一个多米诺骨牌。</p>
+    <p class="source">Georgiou, Buhl, Green et al. 2021 · DOI: 10.1371/journal.pcbi.1008353</p>
+  </div>
+</article>
+
+<!-- 4: 2025 EMBO J · 染色质开合决定行为 -->
+<article class="card" data-tags="phys,beh,gen" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">把一只散居蝗虫放进拥挤的笼子里，几小时内它就"换了一个人"</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">EMBO J.</span></div>
+  </div>
+  <p class="card-snippet">你在实验室里做一件很简单的事：把一只独居的蝗虫放进一个已经有几百只同类的大笼子里。几小时后，它开始主动靠近其他蝗虫，不再躲了。这不是"习惯"——它的 DNA 没变，但一些关键基因的<strong>开关</strong>被拧动了。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>多巴胺是蝗虫群居行为的直接驱动者——群居型的脑子里多巴胺浓度高得多。但多巴胺合成的关键基因 henna 是怎么被激活的？</p>
+    <div class="note">研究人员发现了一个叫 <strong>GAF</strong> 的蛋白。拥挤的环境通过某种信号通路激活了 GAF，GAF 结合到 henna 基因的"大脑专用启动子"上，把缠在 DNA 上的组蛋白拨开——染色质从"关闭"变成了"打开"。转录因子进来，多巴胺开始飙升，行为立刻改变。</div>
+    <p>三个 GAF 结合位点缺一不可——敲掉任何一个，henna 就不再响应密度变化。这不涉及改变 DNA 本身，纯粹是<strong>包装松紧度的调整</strong>——而这足以在几小时内扭转一个生物的全部社交行为。</p>
+    <p class="source">EMBO Journal 2025 · PMC12084303</p>
+  </div>
+</article>
+
+<!-- 5: 2025 BMC Genomics · 迁徙的基因组印记 -->
+<article class="card" data-tags="gen,evo" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">飞还是不飞——在基因组里留下了一千多个印记</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">BMC Genomics</span></div>
+  </div>
+  <p class="card-snippet">非洲沙漠蝗能飞几千公里，北美有些 Melanoplus 翅膀退化到只剩几毫米——同是蝗科，迁徙能力的差距大到像两个世界的动物。如果你把它们的基因组并排放在一起看，差异到底在哪？</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>跨国团队比较了 10 种蝗虫的全基因组——5 种迁徙、5 种不迁徙或不能飞。</p>
+    <div class="note">在迁徙种中找到了 <strong>1064 个</strong> 处于正选择之下的基因。这些基因几乎全部富集在<strong>能量代谢和线粒体功能</strong>相关的通路上。有一个叫 SETX 的基因，在 5 种迁徙种中全部显示了正选择信号。</div>
+    <p>这个结果很直接：迁徙不是一个"开关基因"控制的简单性状，而是<strong>整个代谢系统被重新配置</strong>的结果。飞几千公里不是一个决定——它是一千多个基因在过去几百万年里一起被大自然"投了赞成票"的结果。</p>
+    <p class="source">BMC Genomics 2025 · DOI: 10.1186/s12864-025-11376-5</p>
+  </div>
+</article>
+
+<!-- 6: 2025 生化成分 + 2021 Front Ecol Evol · 温度改写发育 -->
+<article class="card" data-tags="phys,eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">同一种蝗虫，蒙古的和北京的，卵的"闹钟"不一样</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">Front. Ecol. Evol.</span></div>
+  </div>
+  <p class="card-snippet">中科院的研究人员从蒙古高原一路采集到了北京周边，拿了 8 个不同纬度的同一物种蝗虫卵来孵化。你可能会猜：南方暖和，卵应该发育更快吧？结果发现南方的卵反而更慢。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>不同种群之间，发育的"最低温度"几乎一样——大概在某个值以下，胚胎就暂停了。但<strong>从开始到孵化需要的"积温"总额</strong>差异显著。高纬度种群需要的总热量更少——就好像它们的卵被设定成"攒够 X 卡路里的太阳就出来"。X 的值随纬度系统性地变化。</p>
+    <div class="note">变暖实验表明：升温让所有种群的卵都发育得更快，但同时也提高了每阶段需要的"积温"总量——就像是身体在自动补偿：温度高了就多要求一点，保持整体节奏不崩。</div>
+    <p>这种机制的精妙之处在于：它让蝗虫保留了一年一代的生活节奏，即使气温波动。如果未来的夏季平均温度持续上升，这个补偿机制能撑多久？</p>
+    <p class="source">Hao, Liu, Ma, Guo, Kang (康乐实验室) 2021 · DOI: 10.3389/fevo.2021.736456</p>
+  </div>
+</article>
+
+<!-- 7: 2025 Entomol Res · 向北迁移 -->
+<article class="card" data-tags="eco,meta" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">35 年后重返伊犁河谷——蝗虫已经往北走了 50 公里</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">Entomol. Res.</span></div>
+  </div>
+  <p class="card-snippet">新疆伊犁河谷在 1986-1988 年做过一次大规模的蝗虫群落调查。2022-2023 年，有人沿着同样的路线重新走了一遍——35 年的时间跨度，恰好覆盖了全球变暖最剧烈的一段时期。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag meta">方法</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>比较两轮的物种温度指数（每个物种偏好的平均温度）和群落温度指数（整个群落加权后的温度偏好），发现：</p>
+    <div class="note">蝗虫整体以每年约 <strong>1.45 公里</strong> 的速度向北迁移。在约 1158 米海拔的地方，嗜冷物种往更高海拔撤，嗜热物种向下迁——两边数量差不多大，群落的温度组成被"洗牌"了。</div>
+    <p>值得注意的是这不是单调的"全部北移"。不同温度偏好的蝗虫选择了不同的空间策略——上山、下山、北进——同时发生。如果你只看一个地点，可能觉得"没什么变化"，但实际上整个群落结构的经纬度和垂直剖面都在悄悄移动。</p>
+    <p class="source">Song, Liu, Li et al. 2025 · DOI: 10.1111/1748-5967.70064</p>
+  </div>
+</article>
+
+<!-- 8: 2021 Ecol Evol · 物候决定命运 -->
+<article class="card" data-tags="eco,evo" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">春天出来的蝗虫比夏天出来的更怕变暖——这跟你的直觉反着来</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">Ecol. & Evol.</span></div>
+  </div>
+  <p class="card-snippet">六种北美蝗虫生活在同一片草地上，但有的早春就孵化了，有的等到盛夏才出来。你可能会觉得盛夏本来就热，盛夏出壳的种类应该更耐热、更不怕变暖——但数据说正好相反。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>Lemoine 用了 9 种不同的生态位模型来预测 2050 年的分布。结论非常清晰：</p>
+    <div class="note"><strong>早季物种对气候变化极度敏感</strong>——它们的适宜栖息地可能会大幅北移。而晚季物种呢？因为本来就是在酷热干旱的夏末活动的，它们对额外几度升温几乎不敏感，2050 年的分布图看起来和今天差不多。</div>
+    <p>这个规律的有趣之处在于可操作性：如果你想预测某种蝗虫会不会因为变暖入侵新区域，<strong>先看它的物候</strong>——可能比看它的食性、体型或者亲缘关系都准。</p>
+    <p class="source">Lemoine, N.P. 2021 · DOI: 10.1002/ece3.8463</p>
+  </div>
+</article>
+
+<!-- 9: 2025 生化成分 -->
+<article class="card" data-tags="phys,beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">把十只蝗虫放进笼子和把两百只放进笼子——身体化学成分完全不一样</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">Int. J. Biosci. Biochem.</span></div>
+  </div>
+  <p class="card-snippet">喀麦隆雅温得大学的团队做了一个简单的梯度实验。同一个物种的沙漠蝗，养在四种密度下——每笼 1 只、10 只、50 只、200 只。然后他们把蝗虫磨碎了测成分。结果令人惊讶：蛋白质、脂肪、碳水化合物、激素——没有一样是相同的。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>散居型（低密度）和群居型（高密度）的生化剖面：</p>
+    <div class="note">
+      散居型：蛋白质 58.4% · 脂肪 18.2% · 碳水化合物 11.3%<br>
+      群居型：蛋白质 52.1% · 脂肪 14.6% · 碳水化合物 16.8%<br><br>
+      群居型的血清素飙到散居型的 <strong>12.3 倍</strong>，多巴胺 <strong>9 倍</strong>。<br>
+      但保幼激素（JH-III）反而降了 <strong>4.2 倍</strong>——这是关键：保幼激素下降意味着<strong>从"繁殖模式"切换到了"迁徙模式"</strong>。
+    </div>
+    <p>散居型的雌虫产 94 枚卵/荚、4.8 个卵荚。群居型只有 78 枚和 3.9 个。全身的资源被重新分配了——不再投资于后代，而是投资于运动和生存。密度这个看起来很简单的外部变量，在蝗虫体内触发了系统性的、可量化的"大换血"。</p>
+    <p class="source">Abessolo, Njoya, Takam 2025 · DOI: 10.33545/26646536.2025.v7.i1c.221</p>
+  </div>
+</article>
+
+<!-- 10: 2021 PLOS ONE · Tonkinacris 系统发育 -->
+<article class="card" data-tags="evo" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">越南北部山区的四种蝗虫——它们真的是四个物种吗？</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">PLOS ONE</span></div>
+  </div>
+  <p class="card-snippet">东亚的 Melanoplinae 亚科中有一个叫 Tonkinacris 的小属——分布在中越边境的山区，一共就几种，形态差异不大。几十年来就靠几条腿上的刺和外生殖器的形状来区分物种。但到了 2021 年，有人终于做了分子系统学。</p>
+  <div class="card-tags"><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>研究用了 COI（线粒体条形码）和 ITS1/ITS2（核糖体 DNA 的内转录间隔区）全套标记，四种分析方法（ML、Bayesian、K2P 距离、GMYC 模型）同时上阵。</p>
+    <div class="note">结果三种被强支持为独立物种：<em>T. sinensis</em> → <em>T. meridionalis</em> → (<em>T. decoratus</em>, <em>T. damingshanus</em>)。但第四种 <em>T. damingshanus</em> 的有效性分子证据不充分——它和 <em>T. decoratus</em> 之间的遗传距离不够大。</div>
+    <p>这跟 Woller 研究的 24 种飞行丧失 Melanoplus 形成了有趣的镜像：一个是东亚山脉中的小属面临物种边界模糊的问题，一个是北美干旱带的大属面临形态趋同的问题。Melanoplinae 在全球范围内可能充满了这种"物种定义还在摇摆"的分类学难题。</p>
+    <p class="source">Wang, Jiang, Gu et al. 2021 · DOI: 10.1371/journal.pone.0249431</p>
+  </div>
+</article>
+
+<!-- 11: 2014 PLOS Genetics · miR-133 -->
+<article class="card" data-tags="beh,gen" data-year="2014">
+  <div class="card-header">
+    <h2 class="card-title">一条小分子 RNA，就能让狂欢的蝗群变回安静的独居者</h2>
+    <div class="card-meta"><span class="card-year">2014</span><br><span class="card-journal">PLOS Genetics</span></div>
+  </div>
+  <p class="card-snippet">你有没有想过——如果蜇群的蝗虫可以"安静下来"，不再能形成灾害性的迁徙群，世界粮食供应会少多少威胁？康乐实验室发现了一类 RNA 分子，注射到群居蝗虫体内后——它们真的安静了。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>miR-133 是一条微小的 RNA，不编码蛋白质，但能精确地抑制另外两个关键基因：henna 和 pale——这两个基因恰好负责合成多巴胺。</p>
+    <div class="note">当 miR-133 升高，henna 和 pale 就被掐断，多巴胺产量骤降——群居的蝗虫立刻开始回避同伴。反过来，如果用抑制剂把 miR-133 压下去，独居的蝗虫在几个小时内就开始主动靠近其他个体。</div>
+    <p>更妙的是——如果你在注射 miR-133 的同时补充多巴胺，蝗虫又恢复了群居行为。这说明整条通路是单向的、可逆的、可操作的。这不是天方夜谭——这是在原理上可行的"行为化学调控"。</p>
+    <p class="source">Yang et al. 2014 · PLOS Genetics · 康乐实验室</p>
+  </div>
+</article>
+
+<!-- 12: 2021 Ecol Evol · 飞行 vs 繁殖 -->
+<article class="card" data-tags="eco,evo" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫如果把能量花在翅膀上，就只能少生几个蛋</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">Ecol. & Evol.</span></div>
+  </div>
+  <p class="card-snippet">养过鸡的人都知道一个常识：会飞得远的品种通常下蛋少。蝗虫也一样——但这背后的进化 trade-off 在科一级的尺度上是怎么表现的？如果我们拉一张蝗总科的进化树来看，飞行能力和繁殖力真的是此消彼长吗？</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>Chang 等人系统性地收集了蝗总科（Acridoidea）多个物种的翅长、飞行肌质量、卵巢质量和卵数，放入进化树中计算它们之间的相关性。</p>
+    <div class="note">飞行能力和繁殖输出确实呈现负相关——但这个关系的<strong>强度和方向因不同的进化支而异</strong>。有些支里 trade-off 非常显著（翅膀越大 = 卵巢越小），有些支里弱到几乎测不出来。</div>
+    <p>这个发现解释了为什么 Woller 的 24 种飞行丧失可能不是孤立事件：在蝗总科的不同支系里，放弃飞行可能是一个反复出现的进化策略——但触发它的环境条件可能各不相同：得州的干旱、岛屿的隔离、高海拔的低氧……每个地方的"丢翅膀"理由可能是不同的。</p>
+    <p class="source">Chang, Guo, Guo 2021 · DOI: 10.1002/ece3.16849</p>
+  </div>
+</article>
+
+<!-- 13: 2026 Ecol Model · 机器学预测 -->
+<article class="card" data-tags="eco,meta" data-year="2026">
+  <div class="card-header">
+    <h2 class="card-title">能不能在蝗灾爆发前两个月就提前知道？——用机器学习"看天气"</h2>
+    <div class="card-meta"><span class="card-year">2026</span><br><span class="card-journal">Ecol. Model.</span></div>
+  </div>
+  <p class="card-snippet">非洲之角的蝗虫预警主要靠人开着越野车去找——等发现的时候，蝗群往往已经形成了。Mamo 等人想：能不能反过来，从卫星数据和气象记录里提前"算出来"蝗虫会出现在哪里？</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag meta">方法</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>他们训练了一个机器学习模型，输入温度、降水和卫星植被指数（NDVI），让它学着预测蝗虫种群的高峰期和空间分布。用历史数据做回溯测试时，机器学习的预测精度超过了传统机理模型。</p>
+    <div class="note">传统机理模型的问题在于参数太多、每个参数的不确定性太大——尤其是沙漠蝗跨越多个国家边界的扩散，几乎没有完整的野外数据来校准。机器学习绕过了"理解过程"，直接拟合了"输入-输出"关系。</div>
+    <p>但问题也在这里：模型能告诉你"哪里可能有蝗虫"，但没法告诉你"为什么"。如果 2050 年的降水模式完全不同于训练数据，模型的预测可能失效。预测的实用性和可解释性在这里存在一个真实的张力。</p>
+    <p class="source">Mamo, Kinyanjui, Siewe 2026 · Ecological Modelling</p>
+  </div>
+</article>
+
+<!-- 14: 2020/2023 Nature · 4VA 信息素 -->
+<article class="card" data-tags="beh,phys" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫之间靠一种闻起来像香草+杏仁的分子互相喊"过来！"</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Nature</span></div>
+  </div>
+  <p class="card-snippet">如果你凑近一群群居型飞蝗，能闻到一股淡淡的特殊气味。几十年来研究人员一直怀疑那是某种"集合信号"——但我们不知道具体是哪个分子。2020 年，康乐团队终于找到了它。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>这个分子叫 <strong>4-vinylanisole（4VA）</strong>——一种挥发性苯环化合物。群居型飞蝗大量释放 4VA，而且无论是散居型还是群居型，只要闻到它，就会不由自主地向来源靠近。</p>
+    <div class="note">研究人员找到了 4VA 在蝗虫触角上的受体：OR35。如果把这个受体的基因敲掉，蝗虫就闻不到 4VA 了，也不会被吸引。在极低浓度（每毫升空气几个分子）下 4VA 就能生效。</div>
+    <p>这为蝗灾防控提供了一个全新的靶点——理论上可以开发干扰 4VA 信号的化学释放器，扰乱蝗群的聚集，或者反过来用 4VA 做诱捕陷阱。这比全区域喷洒杀虫剂要精准得多。</p>
+    <p class="source">Guo, Wang et al. 2020 · Nature · 康乐实验室</p>
+  </div>
+</article>
+
+<!-- 15: 2022 J Chem Ecol · PAN 防同类相食 -->
+<article class="card" data-tags="phys,beh" data-year="2022">
+  <div class="card-header">
+    <h2 class="card-title">挤在行军带里的蝗虫为什么不吃掉自己旁边的同伴？</h2>
+    <div class="card-meta"><span class="card-year">2022</span><br><span class="card-journal">J. Chem. Ecol.</span></div>
+  </div>
+  <p class="card-snippet">行军带（hopper band）里的若虫蝗虫密度极高，每一只都饿得要命——毕竟它们一天要吃自己体重一半的食物。但奇怪的是，你几乎看不到它们互相攻击。它们身上有一种"别吃我"的化学信号。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>这个分子叫 <strong>苯乙腈（phenylacetonitrile, PAN）</strong>。密度越高，每只蝗虫释放的 PAN 越多。PAN 不杀死同伴——它只是让靠近的蝗虫产生取食回避。</p>
+    <div class="note">有趣的是 PAN 和 4VA（见上一篇）形成了一个信息素的双轨系统：4VA 是"过来"信号，PAN 是"别吃"信号。两者在高密度下同时增强——既要聚集，又不能吃自己人。</div>
+    <p>联想到 Dukas 2008 年的学习实验（蝗虫能通过经验判断什么能吃、什么不好吃）：也许蝗虫不仅先天释放 PAN，还能通过经验学习"PAN 味 = 别咬"这个关联。化学防御 + 学习能力——双重保险。</p>
+    <p class="source">J. Chem. Ecol. 2022 · DOI: 10.1007/s10886-021-01333-3</p>
+  </div>
+</article>
+
+<!-- 16: 2023 性染色体进化 -->
+<article class="card" data-tags="evo,gen" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的性染色体是活的"进化实验室"——有些物种在实时重组它的性别决定系统</h2>
+    <div class="card-meta"><span class="card-year">2020-23</span><br><span class="card-journal">Heredity / BMC Evol.</span></div>
+  </div>
+  <p class="card-snippet">大多数动物（包括人）的性染色体是很古老、很稳定的。但蝗虫——尤其是 Melanoplinae 亚科——的性染色体系统极度活跃。有些种甚至融合了常染色体进来，形成了"新性染色体"。</p>
+  <div class="card-tags"><span class="tag evo">进化</span><span class="tag gen">基因组</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p><em>Ronderosia bergii</em>（一种南美的 Melanoplinae）拥有一个 neo-XY 系统——一条常染色体与原始 X 染色体融合形成了"新 X"，而这条常染色体的同源拷贝变成了"新 Y"。</p>
+    <div class="note">在 neo-Y 上，卫星 DNA（高度重复的非编码序列）正在快速积累。这个过程恰好展示了性染色体退化的第一步——Y 染色体开始沉默、缩小、失去基因。这在整个自然界中是一个正在发生的实时过程，而在蝗虫中只需要短短几百万年就能看到各个阶段。</div>
+    <p>这跟 White &amp; Nickerson 1951 年那篇"极稀有蝗虫结构杂合性"形成了跨越 70 年的呼应：1951 年在显微镜下看染色体的形状，2023 年在测序仪上看 DNA 的序列。同一个问题，同一类昆虫，技术的代差。</p>
+    <p class="source">Palacios-Gimenez et al. 2020–2023 系列</p>
+  </div>
+</article>
+
+<!-- 17: 2025 Insects · 云南 mitogenome -->
+<article class="card" data-tags="gen,evo" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">云南山里的蝗虫被一只一只捉来测基因组——17 个新的"条形码"</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">Insects</span></div>
+  </div>
+  <p class="card-snippet">云南是东亚直翅目多样性最丰富的地方之一，但奇怪的是——你很难找到这些蝗虫的分子数据。很多物种只有一个拉丁名、几行形态描述，连 COI 条形码都没有。2025 年的一批研究者上山了。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>Zhang 等人为 17 种云南蝗科蝗虫测了完整的线粒体基因组。这相当于给每个物种一份"身份证"。部分物种的 mitogenome 显示了显著的结构重排——与经典的昆虫 mitogenome 模板相比，基因顺序变了。</p>
+    <div class="note">mitogenome 重排本身是一个有用的进化标记——因为它是罕见事件，一旦发生就不会轻易变回去，可以用于推断深层的系统发育关系。</div>
+    <p>这项工作是基础性的——不产出"重大发现"，但为将来更深入的问题（比如：青藏高原的隆升如何影响直翅目的扩散和分化？）铺平了道路。你不可能在没有数据的情况下回答一个大问题。</p>
+    <p class="source">Zhang, Song, Lu et al. 2025 · Insects 16(2):151</p>
+  </div>
+</article>
+
+<!-- 18: 2024 草地指示物种 -->
+<article class="card" data-tags="eco,meta" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">想知道这片草地健康不健康？——数一数里面有多少种蝗虫</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Ecol. Indicators</span></div>
+  </div>
+  <p class="card-snippet">牧民最怕蝗虫——但换个角度，蝗虫群落也可以反过来告诉你草原的状态。不同放牧强度下，蝗虫的种类、体型分布和功能群组成会有可预测的变化。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag meta">方法</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>蝗虫在草地食物网中处于中间位置——吃草、同时被鸟和蜥蜴吃。这让它对"上面"和"下面"同时敏感：过度放牧减少了植被覆盖，直接压缩了大型蝗虫的生存空间；而适度放牧反而能维持较高的蝗虫多样性。</p>
+    <div class="note">过度放牧 → 大型蝗虫减少、小型地表种增加。适度放牧 → 蝗虫功能群多样性达到峰值。完全禁牧 → 大型种恢复但总丰富度不一定最高。</div>
+    <p>这与加拿大草原指南形成了有趣的对照：一个视角是"把蝗虫当害虫来管理"，另一个视角是"把蝗虫当草原健康的温度计来读"。同一批昆虫，两个完全不同的用途。</p>
+    <p class="source">Ecological Indicators 2024 系列研究</p>
+  </div>
+</article>
+
+<!-- 19: Nature Commun · 飞蝗大基因组 -->
+<article class="card" data-tags="gen,evo,meta" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">飞蝗的基因组比人类的大两倍——它里面到底装了什么？</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Nature Commun.</span></div>
+  </div>
+  <p class="card-snippet">果蝇的基因组大约 175 Mb。飞蝗（Locusta migratoria）的基因组是 6.5 Gb——大了将近 40 倍，甚至比人类基因组（3.2 Gb）还大。为什么蝗虫要带这么多 DNA 到处跑？</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag evo">进化</span><span class="tag meta">综述</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>答案不全是功能基因。超过 60% 的飞蝗基因组是重复序列——大多数是转座子（跳跃基因），而且很多是近期活跃的。这些转座子不是垃圾——它们在不同的相变阶段有不同的表达模式。</p>
+    <div class="note">一个可能性是：大基因组本身是"表型保守"的代价。复制 6.5 Gb 的 DNA 很慢、很耗能，导致细胞分裂慢、体型和形态在进化上趋于保守。而这个巨大的重复序列库，可能恰好为蝗虫应对环境变化（如相变）提供了一个"调控元件池"——多出来的 DNA 不是累赘，是工具箱。</div>
+    <p>这个解释还不确定，但它指向了一个深刻的问题：在一个基因组大小的极端值上，"垃圾"和"资源"的界限是模糊的。</p>
+    <p class="source">Wang, Kang et al. 2014–2023 · Nature Communications 系列</p>
+  </div>
+</article>
+
+<!-- 20: 2021 J Thermal Biol · 体色与温度 -->
+<article class="card" data-tags="phys,eco" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">同一片山上，颜色深的蝗虫总是比浅色同类更早开始觅食</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">J. Thermal Biol.</span></div>
+  </div>
+  <p class="card-snippet">清晨阳光刚出来，露水还没干。如果你趴在山坡上看，会发现深绿色的蝗虫已经开始在草叶上啃食了，而浅绿色的个体还一动不动。这不是食谱的区别——这是体色在帮它们"吸收太阳"。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>深色体表吸收太阳辐射的效率更高，体温上升更快。在高海拔或高纬度地区，这多出来的几分钟可能就是能否在寒冷清晨完成一天能量摄入的关键。</p>
+    <div class="note">但在低纬度沙漠——深色可能直接导致过热死亡。所以你会看到同一种蝗虫在不同纬度有系统性的体色差异：靠近赤道偏浅，靠近极地偏深。这是体温调节和伪装需求之间的双重选择。</div>
+    <p>这跟相变的体色变化（散居绿 → 群居深色）形成了叠加：拥挤不仅改了颜色，可能还<strong>无意间改变了蝗虫对局地气候的适应性</strong>。一只在蒙古高原的群居深色蝗虫可能在寒凉清晨占据了温度优势——但同一只虫如果出现在撒哈拉，可能活不过中午。</p>
+    <p class="source">Journal of Thermal Biology 2021 综述</p>
+  </div>
+</article>
+
+
+<!-- ===== 第3轮 2026-08-04 ===== -->
+
+<!-- 21: 2026 Comm Biol · 公路噪声改变蝗虫发声器官 -->
+<article class="card" data-tags="beh,phys" data-year="2026">
+  <div class="card-header">
+    <h2 class="card-title">住在公路边的蝗虫，腿上用来"唱歌"的齿比安静草地的同类多了一成</h2>
+    <div class="card-meta"><span class="card-year">2026</span><br><span class="card-journal">Commun. Biol.</span></div>
+  </div>
+  <p class="card-snippet">日本北海道大学的研究者做了一件很简单的事：沿着公路边和安静的公园，分别捉了将近 300 只雄性蝗虫回来。然后在显微镜下数它们后腿内侧的发声齿——那些细密的突起在求偶时用来摩擦翅膀发出声音。结果公路边的蝗虫，单位长度上的齿数比安静草地的多了 13.4%。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>这种变化不像是基因突变——同一地点不同年份的蝗虫，齿密度的数值会有波动。研究人员判断这是<strong>若虫发育阶段遭受的环境压力</strong>造成的形态响应，而不是遗传的。</p>
+    <div class="note">但有趣的是：尽管齿多了，这些蝗虫发出的歌声的音高（峰值频率）并没有变高。这意味着齿密度的增加<strong>并没有带来声学通信上的优势</strong>——它不是"为了更好地被听到"而进化的，而是噪声环境导致的"副作用"。</div>
+    <p>这个发现指向一个更大的问题：人类活动产生的噪声不仅仅是让动物"听不见"——它可能在<strong>物理层面改变动物的身体</strong>，即使这些改变对它们没有直接的生存帮助。路边的蝗虫身上的每一条细齿，都是人类文明刻下的痕迹。</p>
+    <p class="source">Yoshigai, Nakaoka, Senzaki et al. 2026 · DOI: 10.1038/s42003-026-10181-4 · 北海道大学</p>
+  </div>
+</article>
+
+<!-- 22: 2024 ZooKeys · 7种蝗虫的发声与求偶 -->
+<article class="card" data-tags="beh,evo" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的求偶比你想象的复杂——有些物种会用好几种不同的声音来追雌虫</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">ZooKeys</span></div>
+  </div>
+  <p class="card-snippet">如果你在俄罗斯、格鲁吉亚或哈萨克斯坦的草原上趴下来仔细听，蝗虫发出的不只是单调的"嚓嚓"声。俄国科学院的 Vedenina 团队录了 7 种蝗虫的"歌"，并且在高速摄影下同步记录了它们的腿是怎么动的。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>在三种蝗虫（Mesasippus kozhevnikovi 和两种 Chorthippus）中，腿的运动模式相对简单——摩擦几下，发出一个脉冲。这是比较"原始"的发声方式。另外四种则有更高阶的技巧。</p>
+    <div class="note">求偶歌比呼叫歌复杂得多——七种里有六种在追雌虫时会加入额外的音节元素。最夸张的是 Myrmeleotettix palpalis 和 Megaulacobothrus aethalinus——它们求偶时会用好几种不同质地的声音组合。M. aethalinus 的发声齿特别长，齿的不同段落参与生产不同的声音——就像一件多音色乐器。</div>
+    <p>有趣的是在六种蝗虫中，声音的<strong>主能量都落在超声波范围（>20 kHz）</strong>——人耳听不到。如果你用普通录音机去录，大概率会错过主角。只有 M. aethalinus 的主峰低于 20 kHz，是少数几种人能用耳朵辨别清楚的蝗虫歌者。</p>
+    <p>研究中还发现三种蝗虫在求偶时<strong>不仅唱歌，还有视觉表演</strong>——摆动触角、晃动身体、甚至高频挥动触须。这种"声+舞"的多模态求偶在蝗虫中可能比我们以为的更普遍。</p>
+    <p class="source">Vedenina, Sevastianov, Kovalyova 2024 · DOI: 10.3897/zookeys.1200.118422</p>
+  </div>
+</article>
+
+<!-- 23: 2024 Ann Rev Entomol · 营养假说被推翻 -->
+<article class="card" data-tags="eco,phys" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">我们一直以为"植物蛋白质多 = 蝗虫长得更好"——但半个世纪的证据说未必</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Annu. Rev. Entomol.</span></div>
+  </div>
+  <p class="card-snippet">常识告诉我们：蛋白质丰富，动物就长得好。氮肥能提高牧草的蛋白质含量，所以施氮应该让吃草的蝗虫受益。但 Cease 翻遍了五十年间所有的相关研究，发现蝗虫对高氮植物的反应——和吃低氮植物的反应——同样可能是正面、负面或中性的。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>这不只是一个统计上的"不确定"——<strong>低氮环境可能对蝗虫更有利</strong>。</p>
+    <div class="note">高蛋白植物同时往往含有更多的防御性次生化合物——这是植物的 trade-off。更关键的是：迁徙型飞蝗需要的燃料是<strong>碳水化合物</strong>而非蛋白质。在低氮环境中，植物的碳氮比更高——相当于"高热量快餐"——恰好符合群居型蝗虫高能耗长途飞行的需要。</div>
+    <p>这篇综述直接挑战了农业生态学中一个持续了几十年的基本假设。也解释了为什么过度放牧（持续取食降低植物氮含量）和大气 CO₂ 升高（稀释植物蛋白质浓度）反而可能促进蝗灾爆发——<strong>我们"改良"过的土地，恰好成了飞蝗的理想食堂</strong>。</p>
+    <p class="source">Cease, A.J. 2024 · Annual Review of Entomology 69:527–550 · DOI: 10.1146/annurev-ento-120220-110415</p>
+  </div>
+</article>
+
+<!-- 24: 2022 Front Microbiol · 9种同域蝗虫的肠道菌 -->
+<article class="card" data-tags="gen,eco" data-year="2022">
+  <div class="card-header">
+    <h2 class="card-title">把九种生活在同一片黄土坡上的蝗虫剖开——它们的肠道里住着相似的"租客"</h2>
+    <div class="card-meta"><span class="card-year">2022</span><br><span class="card-journal">Front. Microbiol.</span></div>
+  </div>
+  <p class="card-snippet">陕西黄土高原上，九种蝗虫吃差不多的草、晒一样的太阳——连生活节奏都类似。有人想知道：既然它们吃的喝的都差不多，肠道里的细菌是不是也差不多？于是从每种蝗虫肚子里取了样本，拿去测 16S rRNA。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>门级别的组成高度一致：<strong>Firmicutes 和 Proteobacteria</strong> 占了绝对优势——和之前在其他蝗虫（包括笔记中 Dukas 研究的 Schistocerca americana）中发现的结果吻合。</p>
+    <div class="note">但在属级别，九种蝗虫差异明显。Bacillus、Enterococcus、Lactococcus 构成了 Firmicutes 的主体；Enterobacter、Pantoea、Halomonas 撑起了 Proteobacteria。其中 18 个 OTU 是所有九种蝗虫共有的——这 18 个分类单元可能就是蝗虫肠道菌群的<strong>"基础配置"</strong>。</div>
+    <p>通过 PICRUSt 功能预测，这些共享菌群的主要功能集中在膜运输、碳水化合物代谢和氨基酸代谢——恰好对应了蝗虫"吃进去的东西怎么拆解、怎么运输、怎么再组装成自己的蛋白质"这三个问题。它们不是简单的过客，而是蝗虫消化系统的必要组成部分。</p>
+    <p class="source">Zhao et al. 2022 · Frontiers in Microbiology 13:806927</p>
+  </div>
+</article>
+
+<!-- 25: 2022 Front Ecol Evol · 斑翅蝗的骗术 -->
+<article class="card" data-tags="beh,evo" data-year="2022">
+  <div class="card-header">
+    <h2 class="card-title">一飞起来就亮出鲜艳后翅、落下来立刻消失——这不是魔术，是精密计算的防御策略</h2>
+    <div class="card-meta"><span class="card-year">2022</span><br><span class="card-journal">Front. Ecol. Evol.</span></div>
+  </div>
+  <p class="card-snippet">斑翅蝗亚科（Oedipodinae）有一种令人困惑的本事：蹲在地上的时候颜色和泥土一模一样——完美隐身。但一旦被惊飞，后翅展开，露出鲜艳的红、黄或蓝色，伴随黑色的横带。几秒钟后落地，颜色瞬间消失，你眼睁睁看着那只蝗虫就在这里——但就是找不到它了。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>这个看似简单的行为实际上叠加了<strong>三种独立的防御机制</strong>：</p>
+    <div class="note">
+      1. <strong>惊蛰效应（deimatic display）</strong>：起飞瞬间从隐蔽色切换到鲜艳警示色，吓捕食者一跳<br>
+      2. <strong>动态闪光（dynamic flash coloration）</strong>：飞行时翅膀一开一合，颜色在"红/蓝/黄"和"消失"之间高速切换——在捕食者（鸟类）的视觉系统中产生频闪融合效应，使其无法定位<br>
+      3. <strong>消失术</strong>：落地瞬间切换回土色，捕食者即使一直在盯着，也会因为对比度的突然消失而"丢失目标"
+    </div>
+    <p>这个系统最精妙的地方在于它利用了<strong>捕食者视觉系统的物理限制</strong>——鸟类的临界闪烁融合频率（CFF）大约 120 Hz，比人类高两倍。这意味着对鸟来说，翅膀的闪烁可能产生不同的视觉效果。而那些红/蓝/黑色块的尺寸、形状和运动频率，可能在演化中被精确校准过——恰好让你的视网膜处理不过来。</p>
+    <p class="source">Front. Ecol. Evol. 2022 · DOI: 10.3389/fevo.2022.900544 · 斑翅蝗视觉防御</p>
+  </div>
+</article>
+
+
+<!-- ===== 第4轮 2026-08-04 ===== -->
+
+<!-- 26: 2024 J Orthoptera Res · 越冬成虫的日出而作 -->
+<article class="card" data-tags="beh,phys" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">一个二月的清晨，日本中部的气温是零下 7 度——但一种蝗虫从落叶堆里准时爬了出来</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">J. Orthoptera Res.</span></div>
+  </div>
+  <p class="card-snippet">Patanga japonica 是少数以成虫形态越冬的蝗虫。在日本中部，二月白天最高 16°C、夜间最低零下 7°C——这种温差下，它们每天早上从落叶堆里爬出来晒太阳，傍晚再钻回去。这个看似简单的行为背后是一套精确的光热响应机制。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>田中诚二在透明管道里做了一个巧妙的实验：一半盖上黑纸（暗区），一半透光（亮区）。白天蝗虫主动移入亮区——即使亮区温度更低。傍晚移回暗区。</p>
+    <div class="note">这不是趋温性——是<strong>趋光性</strong>。升温时蝗虫表现出正趋光（朝光走），降温时表现负趋光（躲开光）。温度和光照共同编写了这套"日出而作日落而息"的程序。每天出巢的最低气温阈值大约 14°C。</div>
+    <p>在 1 月份最冷的时候，蝗虫在低于零下一度时完全不动——但如果体温升到约 3.7°C，它们就能站起来。这种"超低温存活 + 精确的昼夜行为"可能是在温带地区越冬成虫的关键适应。毕竟冬天不需要吃东西——关键是别冻死，也别在不该出来的时候出来。</p>
+    <p class="source">Tanaka, S. 2024 · Journal of Orthoptera Research 33(1): 71-86</p>
+  </div>
+</article>
+
+<!-- 27: 2023 Biol Control · Woller合著 · 真菌感染后吃什么能活更久 -->
+<article class="card" data-tags="phys,eco" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">如果一只蝗虫感染了致命真菌，吃对东西能让它多活好几天</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Biol. Control</span></div>
+  </div>
+  <p class="card-snippet">Derek Woller（笔记五中研究 24 种飞行丧失 Melanoplus 的那位）参与了一篇生物防治论文。他们给草地蝗 Melanoplus sanguinipes 感染了绿僵菌（一种常用于生物农药的真菌），然后给它们吃不同配比的食物——蛋白质多的、碳水多的、均衡的。结果完全不按常理出牌。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>按照常规预想，营养均衡应该最有利于抵抗感染。但结果恰好相反：</p>
+    <div class="note">吃<strong>均衡饮食</strong>（蛋白质:碳水 = 1:1）的蝗虫死得最快。吃<strong>蛋白质偏高</strong>（5:1）或<strong>碳水偏高</strong>（1:5）的都活得更久。而且死后的真菌生长量也是均衡组最多——这说明均衡饮食可能恰好提供了病原体最喜欢的营养环境。</div>
+    <p>更有趣的是：如果给蝗虫提供"发烧"的机会——让它们爬到 38°C 的环境里——它们可以<strong>完全靠自己清除掉真菌感染</strong>。这在昆虫中叫"行为发热"（behavioral fever）：通过主动升高体温来杀死体内病原体。</p>
+    <p>两个关键信息：第一，免疫防御的营养学比"吃得好就抗病"复杂得多。第二，温度不仅影响蝗虫——也影响它们的敌人。在变暖的未来里，蝗虫和真菌之间的这场战争的结果可能取决于谁对温度更敏感。</p>
+    <p class="source">Zembrzuski, Woller, Jaronski, Cease et al. 2023 · DOI: 10.1016/j.biocontrol.2023.105268</p>
+  </div>
+</article>
+
+<!-- 28: 2022 Ecol Entomol · 变暖让蝗虫更易感染真菌 -->
+<article class="card" data-tags="phys,eco" data-year="2022">
+  <div class="card-header">
+    <h2 class="card-title">天气越热，蝗虫的身体颜色越浅——但也因此更容易被真菌杀死</h2>
+    <div class="card-meta"><span class="card-year">2022</span><br><span class="card-journal">Ecol. Entomol.</span></div>
+  </div>
+  <p class="card-snippet">高温下蝗虫会变白——这不是巧合。浅色的表皮反射更多的太阳辐射，帮助它们在炎热环境中避免过热。但这里有一个令人担忧的副作用：让表皮变黑的酶，恰好也是免疫系统对抗真菌入侵的主力。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>美国农业部在蒙大拿州 Sidny 的研究站做了一组精确的对比实验：把 Melanoplus sanguinipes 分别饲养在 27°C 和 39°C 下，然后在同一 33°C 环境中用白僵菌（Beauveria bassiana）感染它们。</p>
+    <div class="note">高温饲养的蝗虫体色明显更浅；它们的酚氧化酶（phenoloxidase, PO）活性——无论是伤口诱发的自发性 PO 还是循环总 PO——都显著降低；而且对白僵菌的<strong>感染死亡率显著更高</strong>。</div>
+    <p>深层原因在于生化通路的"共用"：酚氧化酶同时参与角质层黑化（变黑）和先天免疫的"黑化包裹反应"（把入侵菌丝用黑色素裹住）。当身体为了降暑而降低黑化——免疫功能也被无差别降低了。这可能是气候变暖中一个最被低估的威胁：<strong>不仅热死，还可能死于病原体</strong>。</p>
+    <p class="source">Srygley, R.B., Jaronski, S.T. 2022 · DOI: 10.1111/een.13088</p>
+  </div>
+</article>
+
+<!-- 29: 2021 Front Ecol Evol · 三种蝗虫的"定时器" -->
+<article class="card" data-tags="eco,evo" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">内蒙古草原上的三种蝗虫用三种不同的"闹钟"来控制什么时候该孵化</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">Front. Ecol. Evol.</span></div>
+  </div>
+  <p class="card-snippet">同样一片草原上，三种蝗虫的卵在土壤里度过整个冬天——但它们进入休眠和解除休眠的时间点各不相同。就像一个办公室三个同事定了三种不同的闹钟：有的睡得浅、醒得早，有的需要更深的低温来"激活"。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>研究比较了三种同域蝗虫（包括 Oedaleus asiaticus）的休眠策略：每种物种的休眠深度、低温需求、以及解除休眠后的发育速度都不同。</p>
+    <div class="note">关键分子角色是<strong>热休克蛋白（Hsp）</strong>——Hsp70 和 Hsp90 在休眠期的表达模式决定了胚胎能不能在正确的时间结束休眠。这些蛋白同时也在应对环境高温胁迫时发挥作用——所以它们实际上是<strong>冬眠和夏抗的双重工具</strong>。</div>
+    <p>在全球变暖的背景下，这三种蝗虫的物候同步性可能被打乱——如果一种提前孵化而另一种滞后，它们与食物植物之间的时间对齐就会偏移。但 Hsp 系统提供了一定缓冲：它既可以调节休眠，也可以应对热应激。问题是缓冲的上限在哪里。</p>
+    <p class="source">Chen, Hao et al. 2021 · DOI: 10.3389/fevo.2021.743872</p>
+  </div>
+</article>
+
+<!-- 30: 2023 · 蝗虫卵之间的"振动信号" -->
+<article class="card" data-tags="beh,phys" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">一颗没孵出来的蝗虫卵，会"告诉"旁边的卵一起出来</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">J. Orthoptera Res.</span></div>
+  </div>
+  <p class="card-snippet">Patanga japonica 的卵荚里有几十颗卵。这些卵会在几乎同一时间孵化——误差小到分钟级别。如果你把两颗卵分开几毫米，同步性就消失了。但如果你用一根细金属丝把它们连起来——它们又能同步了。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>田中诚二的实验设计极简但极有力。他把同一卵荚里的卵分成三组：挤在一起的、隔开的、隔开但用细丝连接的。</p>
+    <div class="note">挤在一起的卵：同步孵化。隔开的卵：不同步。用细丝连接的卵：<strong>恢复同步</strong>。一根金属丝不可能传递化学信号——唯一的可能是<strong>振动</strong>。胚胎在即将孵化时通过卵壳发出微弱的振动波，相邻的卵接收这些信号，加速或延迟自己的孵化节奏。</div>
+    <p>这解释了为什么一个卵荚里有 30-100 颗卵，它们会在几分钟之内全部孵化，而不是拖上几个小时。对于刚出壳的若虫来说，立刻有同龄同伴在身边意味着觅食效率、集体防御和减少被捕食风险的巨大差异。</p>
+    <p>卵-卵之间的振动通信——在蝗虫中这是一个刚刚被验证的概念。可能在整个直翅目中都广泛存在，只是之前没人想到去测。</p>
+    <p class="source">Tanaka, S. 2023 · Journal of Orthoptera Research · Patanga japonica 生物学系列</p>
+  </div>
+</article>
+
+
+<!-- ===== 第5轮 2026-08-04 ===== -->
+
+<!-- 31: 2023 · 翅膀可以"自己充气" -->
+<article class="card" data-tags="phys,evo" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">刚从蛹里出来的蝗虫，如果把翅膀切下来放在盐水上——它竟然自己能展开</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Integr. Comp. Biol.</span></div>
+  </div>
+  <p class="card-snippet">蝗虫从末龄若虫蜕皮成虫的那一刻，翅膀是皱成一团的——像一把合着的扇子。在接下来几十分钟里它必须快速充气展开，否则就永远飞不了。四十年前有人报告过一个诡异的现象：如果把刚蜕皮的沙蝗前翅切下来放在盐水上，它不需要任何神经或肌肉控制——自己就展开了。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>康奈尔和 UC Davis 的研究团队重复了这个实验——用北美鸟蝗 <em>Schistocerca americana</em>，测试了四种不同液体（纯水、缓冲液、矿物油、仅重力）条件下离体翅膀的自动展开。</p>
+    <div class="note">自动展开确实发生了——但效果不完整。离体的后翅永远达不到在体翅膀的最终长度和面积。重力在展开早期阶段扮演了重要角色：它帮助翅膜初始拉伸。但在活体蝗虫中，<strong>腹部的液压泵送——将血淋巴强力压入翅脉——才是驱动后翅（那种巨大的折叠扇状结构）展开的主力</strong>。</div>
+    <p>所谓的"自动展开"说明翅膀本身具有内在的物理倾向——就像一顶折叠帐篷有弹开的本能——但最终形状是需要外部力（腹部加压和重力）来完成的。这为仿生学提供了一个漂亮的简化模型：如果理解了翅膀怎么自我展开，可能启发新型的微型飞行器或太空展开结构。</p>
+    <p class="source">Integrative & Comparative Biology 2023 · DOI: 10.1093/icb/icad121</p>
+  </div>
+</article>
+
+<!-- 32: 2024 Genome Research · X染色体400万年保守 -->
+<article class="card" data-tags="gen,evo" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的 X 染色体在 4 亿年里几乎没变——从蜻蜓到果蝇都是同一套基因</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Genome Research</span></div>
+  </div>
+  <p class="card-snippet">中国农大和 UBC 的团队发表了第一个染色体级别的飞蝗基因组组装。他们做了一件很巧妙的事：因为雌蝗是 XX、雄蝗是 XO（只有一条 X），直接用测序覆盖度的差异就能把 X 染色体上的基因全部找出来。然后他们发现了一个令人震惊的事实。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>飞蝗 X 染色体上的基因内容——<strong>在直翅目、蜻蜓目、竹节虫目、半翅目、脉翅目、鞘翅目和双翅目这七个昆虫目中高度保守</strong>。换句话说，从一只蜻蜓到一只果蝇，跨越超过 4 亿年的独立进化，X 染色体携带的基因组几乎没变。</p>
+    <div class="note">而且飞蝗 X 染色体上的基因表现出了<strong>完全的剂量补偿</strong>——虽然雄性只有一条 X，雌性有两条，但体细胞中 X 连锁基因的表达量是一样的。同时，睾丸表达基因在 X 染色体上显著偏少——这和经典的性拮抗假说完全吻合。</div>
+    <p>更有意思的是：X 染色体虽然在基因内容上保守，但<strong>进化速率并不均匀</strong>——新近加入 X 的基因表现出快速的适应进化（"Fast-X"），而长期驻留的基因进化得极其缓慢。这说明 X 染色体不是铁板一块——它在保持核心稳定和允许边缘灵活之间维持了精妙的平衡。</p>
+    <p class="source">Li, Mank, Ban 2024 · Genome Research 34:997–1007 · DOI: 10.1101/gr.278794.123</p>
+  </div>
+</article>
+
+<!-- 33: 2024 JOR · 38位作者6大洲全球综述 -->
+<article class="card" data-tags="meta,eco" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">38 个人、6 个大洲、同一场战争——全球蝗虫研究者的"白皮书"</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">J. Orthoptera Res.</span></div>
+  </div>
+  <p class="card-snippet">Arizona State 大学的 Global Locust Initiative 在 2024 年发表了一份特殊的论文：38 位联合作者、来自 34 个机构、横跨六大洲——包括你在这份笔记里已经见过的 Hojun Song 和 Derek Woller。这不是一篇传统论文——这是一份全球蝗虫治理的"现状诊断书"。</p>
+  <div class="card-tags"><span class="tag meta">综述</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>这份综述的独特之处在于它把蝗虫治理看作一个<strong>社会-生态-技术系统（SETS）</strong>——不只谈生物学，而是把治理组织、资金来源、农药使用、环境标准、社区信任全部纳入视野。</p>
+    <div class="note">回看过去一个世纪的蝗虫研究：从 1921 年发现散居型和群居型是同一物种，到现代对多巴胺/血清素/染色质调控的分子级理解——我们的科学工具已经极度精细。但在实际应用中，非洲之角的国家蝗虫委员会面临的是<strong>资金断断续续、议程各自为政、农药和生物农药的取舍困境</strong>。</div>
+    <p>这篇论文提出了一个接近哲学层面的问题：我们花了 100 年理解蝗虫怎么从"独居"变成"群居"，但能不能在接下来的 50 年里，让防灾体系从"危机反应"变成"日常维护"？</p>
+    <p class="source">Word Ries, Adriaansen, Song H, Woller DA 等 38 人 · JOR 2024 · DOI: 10.3897/jor.33.112803</p>
+  </div>
+</article>
+
+<!-- 34: 2023 Ecol Evol · 绿色还是棕色——从若虫就开始决定 -->
+<article class="card" data-tags="evo,phys" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">一只蝗虫一辈子是绿色还是棕色——在出生第二周就决定了</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Ecol. & Evol.</span></div>
+  </div>
+  <p class="card-snippet">Gomphocerinae 亚科中有一些物种终生以两种颜色存在——绿色或棕色——各占一定比例，好像天生就是这样的。利物浦大学的团队从孵化开始跟踪了两种蝗虫的整个生命史，看着它们的颜色从不可辨别到逐渐清晰分化。</p>
+  <div class="card-tags"><span class="tag evo">进化</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>在两种物种（Gomphocerus sibiricus 和 Chorthippus dorsatus）中，绿/棕的差异在<strong>第二若虫龄期</strong>开始显现，到第三龄期基本定型，之后终生不变。蜕下的旧皮上也能看出颜色信息——绿色个体的蜕皮带黄色调。</p>
+    <div class="note">有趣的是，研究人员还从"捕食者的视角"反过来评估了伪装效果。通过视觉建模，发现<strong>某些天敌（如鸟类）能够轻易区分绿棕两型，但另一些天敌（如爬行类）可能不太分得清</strong>。这意味着"伪装"的有效性是相对的——这取决于谁在看。</div>
+    <p>结合之前在观察笔记中提到的热适应（深色吸热快但容易过热）：绿棕多态性可能同时服务于<strong>热调节和躲避天敌</strong>两个目标。当这两个目标冲突时——比如冷天深色有利但容易被鸟发现——种群维持两种颜色就成了进化上的保险策略。</p>
+    <p class="source">Varma, Winter, Rowland, Schielzeth 2023 · DOI: 10.1002/ece3.10712</p>
+  </div>
+</article>
+
+<!-- 35: 2024 JOR · 70多种天敌 -->
+<article class="card" data-tags="eco,phys" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">一只蝗虫在野外面临 70 种敌人——从真菌到鸟到蜥蜴——但最强的一个是"不会杀死蜜蜂"的绿僵菌</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">J. Orthoptera Res.</span></div>
+  </div>
+  <p class="card-snippet">你如果只读蝗灾新闻，会以为蝗虫是"无敌"的——所到之处寸草不生，无虫能挡。但 Yasin 等人梳理了全球文献后发现：蝗虫的天敌多达 70 多种。问题是——这些天敌为什么没能阻止蝗灾？</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>天敌名单涵盖真菌（白僵菌、绿僵菌）、细菌、线虫、捕食性昆虫、鸟类、爬行动物和哺乳动物。问题不在于"有没有天敌"——而在于：</p>
+    <div class="note">在蝗虫爆发期，种群增长是指数级的，天敌种群增长是线性的——滞后 2-3 代。到天敌数量足够多的时候，蝗群已经飞走了。<strong>天敌永远追不上爆发。</strong>但如果是在蝗虫的"衰退期"——或者人力介入的预防性防控——天敌就可以发挥关键作用。</div>
+    <p>其中最突出的候选者是<strong>绿僵菌 Metarhizium acridum</strong>——它的孢子只感染直翅目，不伤害蜜蜂和其他非靶标昆虫。FAO 在高加索和中亚地区（乌兹别克斯坦、吉尔吉斯斯坦等）开展了大规模田间试验，杀灭率可达 89-98%，且对环境无负面记录。</p>
+    <p>这跟卡片 #27（Woller 参与的真菌感染实验）和 #28（高温削弱免疫）形成了完整的故事弧：<strong>真菌是最好的天然武器，但全球变暖可能同时削弱蝗虫的免疫和真菌的致死率</strong>——未来的战争结果取决于温度这个变量。</p>
+    <p class="source">Yasin, Khan, Qayyum et al. 2024 · JOR 33(2): 289-304 · DOI: 10.3897/jor.33.114472</p>
+  </div>
+</article>
+
+
+<!-- ===== 第6轮 2026-08-04 ===== -->
+
+<!-- 36: 2023 · 蝗虫作为食物 -->
+<article class="card" data-tags="eco,phys" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">西南尼日利亚的各种蝗虫蛋白质含量在 50-70%，是玉米的好几倍——当地人一直都在吃，只是没人算过</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Afr. J. Agric. Econ.</span></div>
+  </div>
+  <p class="card-snippet">在非洲 21 个国家，吃蝗虫不是什么猎奇行为——就是日常。Ruspolia differens（一种长角蝗）在乌干达市场上论杯卖，油炸后是下酒菜。但直到最近，才有人认真分析了非洲常见蝗虫的营养成分——结果令人震惊：蛋白质、铁、锌的含量远超玉米和木薯等主食。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>尼日利亚研究团队采集了三种当地蝗虫（飞蝗、Zonocerus variegatus 和 Ruspolia differens），做了全面的营养成分分析。</p>
+    <div class="note">所有三种蝗虫的粗蛋白含量在 50-70%（干重）之间——这是玉米或木薯的 5-7 倍。铁含量 2-4 mg/100g、锌含量 3-5 mg/100g——超过了该地区很多动物源饲料的水平。更关键的是：温室气体排放（g/kg 体重增长）只有猪的十分之一、牛的二十八分之一。</div>
+    <p>肯尼亚和乌干达的研究人员已经开始大规模温室养殖沙漠蝗——用的是穹顶温室（Roof-Park Greenhouse Technology），在可控条件下批量生产蝗虫蛋白。蝗虫吃掉的是小麦苗和豆类，产出的蛋白质可以直接做成动物饲料或人类食品。</p>
+    <p>这种思路的美妙之处在于：它把一个"灾害"变成了"资源"。飞过来的蝗群不能吃（可能有农药），但在可控条件下养出来的、吃有机饲料的蝗虫——它就是最高效的蛋白质工厂。</p>
+    <p class="source">Aderolu & Oyerinde 2024 · FAO 2023 Broadening Horizons N°55 · 肯尼亚/乌干达 Locust4Industry 项目</p>
+  </div>
+</article>
+
+<!-- 37: 2023 · 蝗虫粪便里的氮27%进了草根 -->
+<article class="card" data-tags="eco,phys" data-year="2021">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫吃掉一片草地后，拉出来的粪便反而是草地的"速效肥"</h2>
+    <div class="card-meta"><span class="card-year">2021</span><br><span class="card-journal">Ecosphere</span></div>
+  </div>
+  <p class="card-snippet">你看到蝗虫在啃草叶的时候，心里想的可能是"草被毁了"。但如果用同位素标记追踪元素流动，你会看到另一条路：蝗虫啃下来、消化一部分、排出去——而这些粪粒掉在地上后不到五天的时间里，将近三成的氮已经进了草根。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>德国研究团队用 ¹³CO₂ 和 ¹⁵N 双重同位素标记做了一个精巧的 mesocosm 实验。他们把 Chorthippus dorsatus（一种常见草蝗）放进鸭茅草（Dactylis glomerata）的种植箱里，让它们大吃特吃五天。</p>
+    <div class="note">五天内地上生物量减少了约 34%。但穿透雨水中的溶解性碳和氮浓度暴增了 4-10 倍——蝗虫咬碎的碎叶和粪粒变成了"即溶肥料"。最令人惊讶的是：标记的粪便氮中，<strong>27.6% 在短时间内就从地面转移到了地下——出现在了根部组织中</strong>。土壤微生物也迅速吸收了新进入的碳。</div>
+    <p>在氮贫乏的草地上，蝗虫的取食实际上<strong>加速了养分循环</strong>，而不是"消耗"了养分。草失去的叶片中的氮——通过粪便快速回到土壤——被根系重新吸收用来长新叶。蝗虫扮演的不是"消费者"角色，而是<strong>催肥剂</strong>。</p>
+    <p class="source">Ecosphere 2021 · DOI: 10.1002/ecs2.3449 · ¹³C/¹⁵N 双重标记实验</p>
+  </div>
+</article>
+
+<!-- 38: 2023 · 草地生产力决定蝗虫对土壤的影响方向 -->
+<article class="card" data-tags="eco" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">在肥沃的草地上蝗虫养活了土壤微生物，在贫瘠的草地上却饿死了它们</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Peer Community J.</span></div>
+  </div>
+  <p class="card-snippet">Ibanez 等人在法国阿尔卑斯的 12 块天然和人造草地上做了两年实验——控制了三种蝗虫（吃草的、吃阔叶草的、两种都吃的）的存在，然后测量土壤微生物的酶活性和氮矿化潜力。结果完全推翻了经典预测模型。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>传统"生产力模型"预测：蝗虫在高产草地刺激微生物活动、在低产草地抑制微生物。但实际结果：</p>
+    <div class="note"><strong>高产草地（exploitative 植物占优势）：</strong>蝗虫取食后微生物生物量增加、胞外酶产量下降——根系分泌物刺激了微生物，土壤被"喂养"了。<br>
+    <strong>低产草地（conservative 植物占优势）：</strong>蝗虫取食后微生物生物量减少、酶产量增加——呼吸损失了碳，微生物在"饿着肚子加班"。</div>
+    <p>这个结果对草地管理有直接含义：在肥沃的高产牧场上，一定密度的蝗虫可能<strong>对土壤健康有利</strong>——它们加速了养分周转。在退化草场上，蝗虫取食会进一步恶化土壤微生物环境。所以"蝗虫是害虫"这个概念——至少在生态功能层面——<strong>取决于具体的草地条件</strong>。</p>
+    <p class="source">Ibanez, Foulquier, Brun et al. 2023 · DOI: 10.24072/pcjournal.229</p>
+  </div>
+</article>
+
+<!-- 39: 2025 · 蝗虫看颜色来选食物 -->
+<article class="card" data-tags="beh,phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">如果一个草食性昆虫缺乏"红色受体"，它还能分辨红叶和绿叶吗？——答案是能的</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">J. Asia-Pac. Entomol.</span></div>
+  </div>
+  <p class="card-snippet">很多植物的嫩叶是红色的（富含花青素），成熟后才变绿。红色嫩叶通常有更高的防御化学物质——对广食性昆虫来说，红色意味着"可能有毒"。但蝗虫缺少专门的红色感光细胞——它们是怎么区分红和绿的？</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>日本研究人员用中华剑角蝗（Acrida cinerea）做了颜色选择实验。他们把蔗糖涂在不同颜色的纸盘上，让蝗虫自由选择。</p>
+    <div class="note">结果很清楚：蝗虫明显避开红色和紫色纸盘，偏好绿色。即使它们没有"红色专用"感光细胞——它们的绿色受体有一根<strong>拖长的灵敏度尾巴延伸到长波范围</strong>，足以捕捉到足够的红光来区分红和绿。原理是绿/蓝受体的<strong>光子捕获比</strong>——红和绿在这个比值上差了很远。</div>
+    <p>这解释了为什么在自然界中你可能很少看到蝗虫在啃红色嫩叶——不是它们"看不见"红色，而是它们用了一种你没想过的间接方式来感知。这个发现也跟之前的观察笔记串联了起来：如果体色对温度适应和伪装都重要（卡片 #20 和 #34），那么视觉系统就是这两个选择压力之间的"裁判"。</p>
+    <p class="source">J. Asia-Pacific Entomology 2025 · DOI 见原文</p>
+  </div>
+</article>
+
+<!-- 40: 2024 · 若虫到成虫视觉变强78% -->
+<article class="card" data-tags="beh,phys" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">一只刚孵出来的小蝗虫看世界和它长大后的父母相比——差了 78% 的光灵敏度</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Thesis / Wooster</span></div>
+  </div>
+  <p class="card-snippet">Carolina 蝗（Dissosteira carolina）从一龄若虫到成虫，身体体积可能膨胀几十倍。但它的复眼不是"按比例放大"那么简单。Wooster 学院的一个本科生在毕业论文里，从四个若虫龄期和一个成虫龄期上做了精细的形态学测量——发现视力在成长过程中发生了本质性变化。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>随着蝗虫长大，复眼面积增加，小眼（ommatidia）数量增多。用视觉生态学的标准公式计算了视觉锐度（能分辨多细的细节）和相对灵敏度（在弱光下的表现能力）。</p>
+    <div class="note">从最早测量的若虫龄期到成虫，<strong>视觉锐度基本保持不变</strong>——但<strong>相对灵敏度提高了 78%</strong>。这意味着小蝗虫看世界和成虫一样"清楚"，但成虫在同样的光照下能看到更多——尤其是在清晨和傍晚的弱光环境中。</div>
+    <p>这跟行为需求完全吻合：小若虫活动范围小，藏身密草中，不需要太好的夜视能力。成虫需要飞、需要远距离定位食物和配偶、需要在光线变化剧烈的环境中导航——78% 的灵敏度提升可能是这些新需求的硬件基础。</p>
+    <p class="source">Burlingame, L. 2024 · College of Wooster Senior Thesis</p>
+  </div>
+</article>
+
+
+<!-- ===== 第7轮 2026-08-04 ===== -->
+
+<!-- 41: 2023 · 天空罗盘 -->
+<article class="card" data-tags="beh,phys" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">沙漠蝗脑子里有一个"天空罗盘"——它同时读取太阳位置、紫外线梯度和偏振光来锁定方向</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">J. Comp. Physiol. A</span></div>
+  </div>
+  <p class="card-snippet">沙漠蝗飞几千公里不迷路——这背后不是 GPS，而是一套刻在神经回路里的"天文导航系统"。德国马尔堡大学的 Homberg 团队花了几十年追踪蝗虫脑中负责处理天空信号的神经元——从复眼背缘的专用偏振光感受器，到大脑中央复合体的"罗盘柱"，整条通路已经被基本画清楚了。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>在沙漠蝗的复眼背缘，有一个只占整眼面积约 4% 的微小区域（约 370-390 个小眼）——叫<strong>背缘区（DRA）</strong>。这里的感光细胞排列方式与众不同——它们对光的偏振方向极度敏感，但对颜色和亮度不太关心。</p>
+    <div class="note">这些偏振信号加上来自主眼的太阳亮度直接信息，在视叶和前视结节中汇合，然后从双眼交叉投射到一个叫<strong>中央复合体（central complex）</strong>的脑结构中。这里的神经元按<strong>360°方位排列成柱状阵列</strong>——每一列对应一个太阳方位角。天空偏振模式 + 太阳亮度 + 色差梯度（UV vs 绿光）三路信号在这里被整合成单一的"朝向"输出。</div>
+    <p>更厉害的是——中央复合体还接收来自<strong>风向感应和自身旋转反馈</strong>的信号。所以蝗虫不仅知道太阳在哪，还知道风从哪来、自己有没有在转弯。所有这些信息最后汇总到下行神经元——直接控制飞行和行走的方向。</p>
+    <p>这可能是地球上被研究得最透彻的昆虫导航系统。它证明了：一个只有约 90 万个神经元的微小大脑，可以运行一套完整的天文导航算法。</p>
+    <p class="source">Homberg, Hensgen, Jahn et al. 2023 · DOI: 10.1007/s00359-022-01601-x · 综述</p>
+  </div>
+</article>
+
+<!-- 42: 2023 · 城市蝗虫更胆小但逃得更快 -->
+<article class="card" data-tags="beh,eco" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">城市里的蝗虫比乡下的更"害羞"——但一旦决定跑，跑得比谁都快</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Behav. Ecol. Sociobiol.</span></div>
+  </div>
+  <p class="card-snippet">比利时鲁汶大学的研究团队在三个空间尺度上（0.5、3、5 公里）比较了城市和农村的 Chorthippus brunneus 种群——不只是看体型大小，而是测了它们的"个性"：胆子大小、探索欲、代谢率、甚至鸣声参数。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>测试结果画出了一幅有趣的"城市蝗虫画像"：</p>
+    <div class="note">
+      城市蝗虫平均来说<strong>更胆小、更低探索欲</strong>——但在一个人造的无食物无同伴环境中，它们比农村蝗虫更快到达边界。它们的鸣声频率范围更窄、音束之间的间隔更大。更令人不安的是：城市种群中<strong>自断肢体（autotomy，遇到捕食者时主动断腿逃生）的个体比例显著更高</strong>——而这些断过腿的个体反而更胆大。
+    </div>
+    <p>胆小的蝗虫在城市里留下后代的可能性更高？还是城市环境筛选出了胆小的基因？目前还分不清。但有一个现象很清楚：<strong>城市化的效应在不同空间尺度上表现不同</strong>——在 0.5km 尺度上显著的差异在 5km 尺度上可能消失。这意味着不能用一个统一的"城市化指标"去套所有物种。</p>
+    <p class="source">Waterschoot, Bataille, Van Dyck 2023 · DOI: 10.1007/s00265-023-03325-7</p>
+  </div>
+</article>
+
+<!-- 43: 2022 · 城市化导致不对称翻倍 -->
+<article class="card" data-tags="eco,evo" data-year="2022">
+  <div class="card-header">
+    <h2 class="card-title">住在城市里的蝗虫，左腿和右腿的长度差距是乡下蝗虫的两倍</h2>
+    <div class="card-meta"><span class="card-year">2022</span><br><span class="card-journal">Ecol. & Evol.</span></div>
+  </div>
+  <p class="card-snippet">"波动不对称"（fluctuating asymmetry）是一个经典的环境压力指标——在完美条件下，动物的左侧和右侧应该是对称的。当发育过程中受到胁迫（营养不良、温度异常、污染物），这种对称性就会被打破。德国 Koblenz-Landau 大学的研究团队测量了低、中、高三种城市化程度下 Chorthippus biguttulus 的腿和翅——结果触目惊心。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>从低城市化到高城市化区域：</p>
+    <div class="note">
+      跳跃足的<strong>波动不对称增加了超过两倍</strong>——腿骨（股节）和前翅（覆翅）两侧的长度差系统性地扩大了。同时，城市化越高的地方，蝗虫的<strong>胆量越大、活动性越强</strong>——它们从"僵直不动"的防御状态中恢复得更快、走得更远。
+    </div>
+    <p>这形成了一个令人不安的推论：城市化是一种<strong>发育压力</strong>，导致蝗虫在生长过程中无法维持精确的对称性。但同时——那些活下来的蝗虫可能恰恰是"异常"的个体：更对称的可能因为太"正常"而被淘汰？还是高压力环境选择出了更能承受压力的不对称个体？无论哪种解释，城市的蝗虫和乡下的蝗虫已经不是同一种动物了——即使它们的基因还没来得及分化。</p>
+    <p class="source">Rech, Narimanov, Bauer, Schirmel 2022 · DOI: 10.1002/ece3.9658</p>
+  </div>
+</article>
+
+<!-- 44: 2024 · 高海拔绿棕多态 -->
+<article class="card" data-tags="evo,eco" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">同一座山的低海拔蝗虫绿色多，高海拔棕色多——这不是偶然，是体色帮它们在"算账"</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Ecol. & Evol.</span></div>
+  </div>
+  <p class="card-snippet">在卡片 #34 中我们看到绿棕多态性从若虫期就决定了。但有一个更宏观的规律：如果你沿着一座山的海拔梯度往上走，绿色蝗虫的比例会下降，棕色比例上升。这不是随机漂变——这是体色在帮蝗虫做一笔关于温度的热力学账单。</p>
+  <div class="card-tags"><span class="tag evo">进化</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>高海拔 = 更冷、更短的生长季。棕色个体吸收太阳辐射更高效，在寒冷早晨能更快升温到活动温度——这在生长季被压缩的高山环境中可能是决定性的生存优势。</p>
+    <div class="note">但这里有一个真实的两难：棕色让你暖和——但也让你更容易被天敌看见（卡片 #34 中不同捕食者的视觉模型证实了这一点）。所以<strong>海拔梯度上的棕绿比例实际上反映了"热收益"和"被捕食风险"之间的精确平衡点</strong>——每升高 100 米，等式就重新算一次。</div>
+    <p>随着气候变暖，低海拔正在向高海拔"复制"过去的热环境。绿色蝗虫会不会跟着往上移？棕色的生存优势会不会被削薄？这可能是正在发生的、但几乎没人盯着的生态学变化。</p>
+    <p class="source">Ecology & Evolution 系列 · 阿尔卑斯蝗虫绿棕多态性空间分析 · 2024</p>
+  </div>
+</article>
+
+<!-- 45: 2023 · 群居型散居型生物钟 -->
+<article class="card" data-tags="beh,phys" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">散居型的沙漠蝗只在傍晚活动，群居型白天行军——两套生物钟写在同一副基因里</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">J. Comp. Physiol. A</span></div>
+  </div>
+  <p class="card-snippet">同一只蝗虫，当它是散居型的时候，黄昏才活跃——借夜色掩护，单独运动，顶多飞几十公里。当它变成群居型，活动时间完全翻转——白天行军、白天飞行，跟着太阳走。这个昼夜节律的翻转不是什么小调整——这是整个生物钟被重新校准。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>Homberg 团队在天空罗盘综述中总结了一个被很多人忽略的关键细节：<strong>沙漠蝗的昼夜活动节律是相变依赖的</strong>。散居型是夜行性的——它们避开白天的炎热和捕食者鸟类。群居型完全翻转——白天行军飞行。这意味着天空罗盘系统（卡片 #41）必须在散居型的"夜晚模式"和群居型的"白天模式"之间都正常工作。</p>
+    <div class="note">在低风速条件下，飞行轨迹显著偏离风向——证明蝗虫不是被风"吹着走"，而是有<strong>主动的方向控制</strong>。Kennedy 在 1945 年就用镜子偏转太阳的角度做了实验：蝗虫会跟着"人工太阳"改变方向——但这只在行军带边缘的散兵身上有效，在密集的行军带中心不起作用。这说明集体运动中间部分的方向是由<strong>群体共识</strong>维持的（联系卡片 #1 的"内部投票"机制）。</div>
+    <p>一只蝗虫的脑子里同时储存着"夜行模式"和"昼行模式"——哪个模式激活取决于身边有多少同伴。这比任何智能手机的"日间/夜间模式"切换都高级。</p>
+    <p class="source">Homberg et al. 2023 · J Comp Physiol A · 昼夜节律与相变耦合</p>
+  </div>
+</article>
+
+
+<!-- ===== 第8轮 2026-08-04 ===== -->
+
+<!-- 46: 交配系统与精子竞争 -->
+<article class="card" data-tags="beh,evo" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">雄性飞蝗交配完会在雌虫体内留一个"塞子"——堵住后面来的所有雄性</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Nature Index / 系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫交配看起来简单——雄性跳到雌性背上，把精荚递进去。但精荚不是精子袋那么简单。在飞蝗（Locusta migratoria）里，雄性留下的精荚会变成一个物理栓塞——堵住雌性的受精囊入口，阻止后续交配的雄性把精子送进去。只有等雌虫产卵时，塞子才会被排出来。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>不同蝗虫物种的"精子优先权"机制完全不同：</p>
+    <div class="note">
+      <strong>飞蝗（Locusta）：</strong>精荚物理栓塞→第一只雄性的精子先到先得。<br>
+      <strong>Chorthippus 属：</strong>没有物理栓塞。两交间隔时间越长，第一只雄性的精子数量衰减越严重——后面的雄性反而占优。<br>
+      <strong>Chorthippus parallelus：</strong>雄性根据上次交配的"冷却时间"精确调整精荚大小——刚交配完的精荚只有满状态的一半不到。
+    </div>
+    <p>雌性也不是完全被动的。在 Kosciuscola tristis（一种高山蝗虫）中，雌虫会踢打拒绝后来骑上来的雄性——尤其在繁殖季后期已经交配过的雌虫中更频繁。有些雌蝗甚至会跟雄性"扭打"数分钟才同意。这不是被动接受——是<strong>性冲突</strong>。</p>
+    <p class="source">Nature Index 蝗虫性选择与生殖隔离综述 2023 · 系列研究</p>
+  </div>
+</article>
+
+<!-- 47: 2024 · 始新世蝗虫化石 -->
+<article class="card" data-tags="evo" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">德国梅塞尔坑里挖出了四千七百万年前的蝗虫——保存得太好，触角上的细节都能看清</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">Palaeobio. Palaeoenv.</span></div>
+  </div>
+  <p class="card-snippet">梅塞尔坑（Grube Messel）是德国著名的化石宝库——这里的油页岩保存了始新世（约 47 Ma）的完整生态群落。几十年来出土了无数鱼类、鸟类、哺乳动物化石——但一直没有直翅目。2024 年，终于有人描述了第一批蝗虫化石：两个全新的属和种。</p>
+  <div class="card-tags"><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>新描述的两种化石都属于蚱科（Tetrigidae）——一种体型极小、前胸背板极度延长的蝗虫类群（俗称"侏儒蝗"或"松鸡蝗"）。</p>
+    <div class="note">两个新属新种：<strong>Messeltettix cryptoantennatus</strong> 和 <strong>Archaeoarmatus messelensis</strong>。前者的触角隐藏在特化的触角窝里——这种结构在现代 Tetrigidae 中很少见。后者全身覆盖着小棘状突起——像是在搞"盔甲流"。</div>
+    <p>Tetrigidae 的化石记录极其稀少——全球迄今只描述了 12 种化石蟋蟀。这两新种把这个数字推到了 14。而且梅塞尔坑的惊人保存质量意味着它们的<strong>触角形态、前胸背板纹理、腿节装饰</strong>都可以与现代物种直接对比——这在大多数昆虫化石中是不可想象的。</p>
+    <p class="source">Kasalo, Skejo, Tumbrinck et al. 2024 · DOI: 10.1007/s12549-024-00634-1</p>
+  </div>
+</article>
+
+<!-- 48: 2024 · 新疆7种蝗虫的食性分化 -->
+<article class="card" data-tags="eco" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">同一天山牧场上的七种蝗虫吃完全不同的草——就像七个室友共享一间厨房但各做各的菜</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">J. Orthoptera Res.</span></div>
+  </div>
+  <p class="card-snippet">新疆草原上的研究团队抓了七种主要蝗虫，剖开嗉囊，在显微镜下数它们吃了哪些植物碎片。结果发现——即使是在同一块草地上、看起来都在"吃草"的蝗虫，食谱重叠度远比想象的低。更有意思的是：同一物种的雄性和雌性吃的东西也不一样。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>七种蝗虫的食谱有明显的物种专化：</p>
+    <div class="note">
+      Oedaleus decorus → 偏好早熟禾（Poa annua）<br>
+      Bryodema gebleri → 偏好针茅（Stipa capillata）<br>
+      Calliptamus barbarus → 偏好狗尾草（Setaria viridis）<br>
+      Dericorys annulata → 主要吃苋科植物<br>
+      Oedipoda caerulescens → 主要吃菊科植物
+    </div>
+    <p>雌性比雄性的食谱宽得多——这很好理解：雌性需要更多的食物来支持产卵。在个体层面，寡食性物种（如 Oedaleus decorus）的个体间差异很小——每个个体都吃差不多的东西。但多食性物种（如 Calliptamus coelesyriensis）的个体间差异极大——同一物种的不同个体可以有完全不同的"个人菜单"。</p>
+    <p>这种个体层面的饮食变异可能是种群在环境变化中不灭团的隐性缓冲——当一种食物短缺时，总有那么几个"口味独特"的个体已经把备选项吃熟了。</p>
+    <p class="source">Ren, Kang, Li et al. 2024 · JOR 33(1): 157-168 · DOI: 10.3897/jor.33.110690</p>
+  </div>
+</article>
+
+<!-- 49: 2023 · 串联重复DNA作为杂交区标记 -->
+<article class="card" data-tags="gen,evo" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">西班牙两个蝗虫亚种的"基因分界线"——用重复DNA像荧光笔一样画在地图上</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Genes</span></div>
+  </div>
+  <p class="card-snippet">Chorthippus parallelus 有两个亚种在比利牛斯山脉附近相遇交配——形成了一个天然的"杂交区"。这种杂交区是研究物种形成最好的自然实验室：两个群体在基因上有差异，但还在交换基因——哪些区域在抵抗"融合"？</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag evo">进化</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>研究人员用了下一代测序+FISH（荧光原位杂交），鉴定出了<strong>几十个在亚种间有差异的串联重复DNA家族</strong>。这些重复序列就像散布在染色体上的荧光坐标——精确标记了杂交区中哪一段 DNA 来自哪个亚种。</p>
+    <div class="note">结果发现了<strong>不对称的基因渗入（introgression）</strong>——一个亚种的基因流向另一个亚种的基因组，但反过来不成立或不平衡。这在传统基于单核苷酸多态（SNP）的分析中很难检测到——因为重复序列在常规测序装配中往往被忽略。</div>
+    <p>这个方法论的意义超出了蝗虫——串联重复序列在真核生物基因组中占很大比例，但一直被认为是测序的"暗物质"。蝗虫的杂交区给了我们一个机会，看看这个暗物质是不是也有故事可讲。</p>
+    <p class="source">Genes 2023 · 串联重复DNA用作Chorthippus parallelus杂交区细胞学标记</p>
+  </div>
+</article>
+
+<!-- 50: 2024 · 蝗虫吃外来入侵植物 -->
+<article class="card" data-tags="eco" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">本土蝗虫竟然偏爱外来入侵植物——它们无意中成了生态系统的"守卫"</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">系列综述</span></div>
+  </div>
+  <p class="card-snippet">我们通常把蝗虫当害虫——它们吃庄稼。但在阿拉斯加，研究人员发现 Melanoplus borealis 蝗虫有一个意外的偏好：它们对一种叫 Crepis tectorium 的外来入侵杂草情有独钟。在高密度下，蝗虫能显著压制这种入侵植物的开花和生长。这不叫害虫——这叫"生物抵抗"。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <p>Avanesyan 和 Culley 对已发表的蝗虫取食实验做了一个综述后发现了一个违反直觉的模式：</p>
+    <div class="note">在大多数取食选择实验中，本土蝗虫<strong>不仅接受外来植物，而且经常表现出对外来植物的偏好</strong>——甚至超过本土植物。分子 gut content 分析也确认了野外蝗虫的肠胃里确实有外来植物的 DNA。</div>
+    <p>这个发现翻转了经典生物入侵理论的一个假设——即本土草食动物会"避开"外来植物。蝗虫不会。它们的广食性加上个体层面的饮食变异（见卡片 #48）使它们成为入侵植物在面对本土生态系统时遇到的第一道防线——就像一群不计后果的微型除草机。</p>
+    <p>但有一个关键限制：自然密度往往不够高。实验中蝗虫能压制入侵植物，是因为实验密度远高于野外。所以蝗虫作为"生物抵抗力量"的潜力是存在的——只是通常发挥不到极致。</p>
+    <p class="source">Avanesyan & Culley 系列综述 · 北美蝗虫与外来植物互作</p>
+  </div>
+</article>
+
+</div><!-- end feed -->
+
+<div class="sentinel" id="sentinel" style="max-width:760px;margin:0 auto;padding:10px 24px 60px">
+  <div class="spinner"></div> 继续下滑加载更多...
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="progress" style="max-width:760px;margin:0 auto 20px;padding:0 24px;">
+  已展示 <strong id="shownCount">0</strong> / <span id="totalCount">50</span> 篇 · 当前筛选共 <span id="filterTotal">50</span> 篇
+  <br>第 1-8 轮搜索 · 2014–2026 · Science/Nature/PNAS/EMBO J/PLoS 系列/Frontiers/Insects/JOR 等 20+ 期刊
+</div>
+
+<footer class="site">
+  <div class="container">
+    Field Notes on Grasshoppers · curated from original sources · waterfall-style literature feed<br>
+    <a href="https://github.com/">GitHub Pages 就绪</a> · 纯 HTML · 零图片
+  </div>
+</footer>
+
+<script>
+const CARDS_PER_BATCH = 5;
+const feed = document.getElementById('feed');
+const sentinel = document.getElementById('sentinel');
+const toast = document.getElementById('toast');
+let allCards = [];
+let visibleCount = 0;
+let activeFilter = 'all';
+
+// Collect all cards
+function collectCards(){
+  allCards = Array.from(feed.querySelectorAll('.card'));
+}
+
+// Shuffle array (Fisher-Yates)
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// Show toast message
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 1800);
+}
+
+// Reveal next batch
+function revealBatch(count){
+  const available = allCards.filter(c => c.classList.contains('hidden-card') && (activeFilter==='all' || c.dataset.tags.includes(activeFilter)));
+  const batch = available.slice(0, count);
+  batch.forEach(c => { c.classList.remove('hidden-card'); });
+  visibleCount += batch.length;
+  
+  // Update counter
+  document.getElementById('shownCount').textContent = visibleCount;
+  
+  // If no more to show
+  const remaining = allCards.filter(c => c.classList.contains('hidden-card') && (activeFilter==='all' || c.dataset.tags.includes(activeFilter)));
+  if(remaining.length === 0){
+    sentinel.classList.add('done');
+    sentinel.innerHTML = '🎉 当前筛选下已显示全部卡片 · <button class="shuffle-btn" onclick="reshuffle()">🔀 换一批顺序</button>';
+  } else {
+    sentinel.classList.remove('loading');
+    sentinel.innerHTML = '<div class="spinner"></div> 继续下滑加载更多...';
+  }
+}
+
+// Reshuffle all
+function reshuffle(){
+  // Put all back to hidden
+  allCards.forEach(c => c.classList.add('hidden-card'));
+  // Re-shuffle and re-append
+  shuffle(allCards);
+  allCards.forEach(c => feed.appendChild(c));
+  // Reset
+  visibleCount = 0;
+  sentinel.classList.remove('done');
+  sentinel.innerHTML = '<div class="spinner"></div> 继续下滑加载更多...';
+  sentinel.classList.remove('loading');
+  // Apply filter then reveal
+  applyFilter(activeFilter);
+  revealBatch(CARDS_PER_BATCH);
+  showToast('🔀 已重新洗牌！');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Apply filter, re-hide and re-reveal
+function applyFilter(filter){
+  activeFilter = filter;
+  allCards.forEach(c => {
+    c.classList.add('hidden-card');
+    if(filter==='all' || c.dataset.tags.includes(filter)){
+      // keep - handled by revealBatch
+    } else {
+      c.style.display = 'none';
+    }
+  });
+  // Make matching cards available again
+  allCards.forEach(c => {
+    if(filter==='all' || c.dataset.tags.includes(filter)){
+      c.style.display = '';
+    }
+  });
+  visibleCount = 0;
+  document.getElementById('shownCount').textContent = 0;
+  sentinel.classList.remove('done');
+  sentinel.innerHTML = '<div class="spinner"></div> 继续下滑加载更多...';
+  revealBatch(CARDS_PER_BATCH);
+  
+  // Update total count
+  const matching = allCards.filter(c => (filter==='all' || c.dataset.tags.includes(filter)));
+  document.getElementById('totalCount').textContent = matching.length;
+  document.getElementById('filterTotal').textContent = matching.length;
+}
+
+// Intersection Observer
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting && !sentinel.classList.contains('done')){
+      sentinel.classList.add('loading');
+      // Small delay for UX
+      setTimeout(()=>{
+        revealBatch(CARDS_PER_BATCH);
+      }, 300);
+    }
+  });
+}, {threshold:0.1});
+
+// Init
+function init(){
+  collectCards();
+  
+  // Shuffle and hide all
+  shuffle(allCards);
+  allCards.forEach(c => c.classList.add('hidden-card'));
+  allCards.forEach(c => feed.appendChild(c)); // reorder DOM
+  
+  // Observe sentinel
+  observer.observe(sentinel);
+  
+  // Reveal first batch
+  revealBatch(CARDS_PER_BATCH);
+  
+  // Update total
+  document.getElementById('totalCount').textContent = allCards.length;
+  document.getElementById('filterTotal').textContent = allCards.length;
+
+  // Expand/collapse
+  allCards.forEach(card => {
+    card.addEventListener('click', function(e){
+      if(e.target.tagName === 'A') return;
+      this.classList.toggle('expanded');
+    });
+  });
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      allCards.forEach(c => c.style.display = ''); // reset display
+      applyFilter(filter);
+      const matching = allCards.filter(c => (filter==='all' || c.dataset.tags.includes(filter)));
+      document.getElementById('filterTotal').textContent = matching.length;
+      showToast('📂 ' + (filter==='all'?'全部':filter) + ' · ' + matching.length + ' 篇');
+    });
+  });
+}
+
+// Start
+init();
+
+// Pull-to-refresh on mobile
+let touchStartY = 0;
+document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if(dy > 100 && window.scrollY < 10){
+    reshuffle();
+  }
+});
+</script>
+
+</body>
+</html>

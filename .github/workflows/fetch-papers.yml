@@ -1,0 +1,96 @@
+name: Fetch New Grasshopper Papers
+
+on:
+  schedule:
+    # 每周一早上 8:00 UTC（北京时间 16:00）
+    - cron: '0 8 * * 1'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  fetch-papers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch papers from Europe PMC
+        run: |
+          # 搜索近 90 天蝗虫/直翅目相关论文
+          # Europe PMC API 免费、无 key 需要、覆盖 PubMed 全部数据
+          
+          QUERIES=(
+            "grasshopper+OR+locust+AND+(FIRST_PDATE:[NOW-90DAY+TO+NOW])"
+            "Orthoptera+AND+(FIRST_PDATE:[NOW-90DAY+TO+NOW])"
+            "Acrididae+AND+(FIRST_PDATE:[NOW-90DAY+TO+NOW])"
+            "Melanoplus+AND+(FIRST_PDATE:[NOW-90DAY+TO+NOW])"
+            "Schistocerca+AND+(FIRST_PDATE:[NOW-90DAY+TO+NOW])"
+            "Locusta+migratoria+AND+(FIRST_PDATE:[NOW-90DAY+TO+NOW])"
+          )
+
+          TODAY=$(date +%Y-%m-%d)
+          RESULT_FILE="data/new_papers_${TODAY}.json"
+          mkdir -p data
+
+          echo '{"fetched":"'"${TODAY}"'","count":0,"papers":[]}' > "${RESULT_FILE}"
+
+          for QUERY in "${QUERIES[@]}"; do
+            echo "=== Searching: ${QUERY} ==="
+            # Europe PMC REST API
+            RESPONSE=$(curl -s "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${QUERY}&resultType=core&pageSize=25&format=json&sort=RELEVANCE")
+            
+            # Extract titles, authors, journals, dates, DOIs
+            echo "${RESPONSE}" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+results = data.get('resultList', {}).get('result', [])
+for r in results:
+    paper = {
+        'title': r.get('title', ''),
+        'authors': r.get('authorString', ''),
+        'journal': r.get('journalTitle', ''),
+        'year': r.get('pubYear', ''),
+        'doi': r.get('doi', ''),
+        'abstract': (r.get('abstractText','') or '')[:500],
+        'source': r.get('source', '')
+    }
+    # Filter: only keep if abstract exists and is relevant
+    t = (paper['title'] + paper['abstract']).lower()
+    if any(k in t for k in ['grasshopper','locust','acridid','orthopter','melanoplus','schistocerca','oedaleus']):
+        print(json.dumps(paper, ensure_ascii=False))
+            " > /tmp/new_papers.jsonl
+
+            COUNT=$(wc -l < /tmp/new_papers.jsonl)
+            echo "  Found ${COUNT} relevant papers"
+            
+            # Merge into result
+            if [ "${COUNT}" -gt 0 ]; then
+              python3 -c "
+import json
+with open('${RESULT_FILE}') as f:
+    result = json.load(f)
+with open('/tmp/new_papers.jsonl') as f:
+    for line in f:
+        result['papers'].append(json.loads(line.strip()))
+result['count'] = len(result['papers'])
+with open('${RESULT_FILE}', 'w') as f:
+    json.dump(result, f, ensure_ascii=False, indent=2)
+              "
+            fi
+          done
+
+          echo "=== Total papers collected: $(python3 -c "import json;d=json.load(open('${RESULT_FILE}'));print(d['count'])") ==="
+
+      - name: Commit and push new papers
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No new papers found this week."
+          else
+            git commit -m "📄 每周论文更新 $(date +%Y-%m-%d)"
+            git push
+            echo "✅ Pushed new papers to data/"
+          fi
