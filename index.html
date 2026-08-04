@@ -97,7 +97,7 @@
   <h1>🦗 Field Notes on Grasshoppers</h1>
   <p class="sub">近十年蝗虫研究 · 观察笔记式整理 · 点击卡片展开详情 · 下滑随机推送</p>
   <div class="stats">
-    <span>📝 <strong id="heroTotal">120</strong> 篇 · 每次推送 5 篇</span>
+    <span>📝 <strong id="heroTotal">135</strong> 篇 · 每次推送 5 篇</span>
     <span>📅 2014–2026</span>
     <span>🔀 随机顺序</span>
   </div>
@@ -2163,6 +2163,237 @@
   <div class="card-body">
     <div class="note">实验室测试已经证实了可行性：在笼子里播放同种的雄性求偶歌——<strong>雌蝗会向声源移动、雄蝗也会靠近（为了驱逐竞争者）</strong>——结果声源附近蝗虫密度明显升高。如果把这个声源和粘虫板或低剂量杀虫剂结合起来——可以做到"精准诱杀"——只需在全田的 5-10% 区域布点。</div>
     <p>这个方案的瓶颈不是技术——是<strong>物种专一性</strong>。每种蝗虫的歌不一样，大规模防蝗需要覆盖 5-10 种目标物种的"多声源阵列"。但在这个方向上——声学的未来可能不亚于化学。</p>
+  </div>
+</article>
+
+
+<!-- ===== 第24-26轮 2026-08-04 ===== -->
+
+<!-- 121: 元胞自动机模拟行军 -->
+<article class="card" data-tags="meta,beh" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">把每只蝗虫简化成三个规则的数学点——"靠近同伴、不要撞、对齐方向"——就能在电脑里复现行军带的全部形状</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">综述</span></div>
+  </div>
+  <p class="card-snippet">基于个体模型（IBM）把每只蝗虫当作一个"agent"——每只只遵循三个局部规则：吸引（向邻居靠拢）、排斥（避免相撞）、对齐（调整方向与邻居一致）。视觉半径根据局部密度自动调整，移动速度不规则（模拟间歇运动）。仅凭这些——电脑屏幕上的点阵自动形成了圆形斑点、带状行军、细长条带——三种自然界真实的群集形态。</p>
+  <div class="card-tags"><span class="tag meta">方法</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">三种形态（spots/bands/ribbons）对应三种不同强度的"吸引"行为——吸引越强，群体越紧凑，形成圆形斑点；吸引适中+强对齐=行军带；吸引弱+强对齐=细长条带。模型中行军带前端的高密度不是"前面的蝗虫走得慢"——而是<strong>前端的蝗虫不断回头走向群体方向</strong>——在数学上等价于一个"反射边界条件"。</div>
+    <p>HaMVIDIA 项目的 Bernoff 团队正在用野外数千只蝗虫的运动追踪数据来校准这些模型——目标是预测"给定初始密度和地形，行军带会朝哪个方向、以什么速度移动"。这在数值上很接近天气预测——只是参数是蝗虫而不是气压。</p>
+  </div>
+</article>
+
+<!-- 122: 蝗虫优化算法 -->
+<article class="card" data-tags="meta" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">人工智能领域从蝗虫那里偷学了一个算法——"蝗虫优化算法"现在被用来调度智能电网和规划无人机航线</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">AI Review</span></div>
+  </div>
+  <p class="card-snippet">"蝗虫优化算法"（GOA）是一种模仿蝗虫群体觅食行为的元启发式算法。它把每个候选解看作一只蝗虫在解空间里移动——社会互动（吸引-排斥）、重力、风力（随机扰动）共同决定每一步去哪里找最优解。现在已经衍生出十几个变体，被用在智能电网调度、无人机航迹规划、金融投资组合优化等领域。</p>
+  <div class="card-tags"><span class="tag meta">方法</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">广东工业大学的综述总结了 GOA 的优势和瓶颈：收敛快、精度高、易实现——但容易陷入局部最优。改进版本引入了非线性参数下降策略（模仿蝗虫从探索到开发的过渡）、分组机制（多群并行搜索）、突变机制（随机跳跃逃离局部最优）——性能大幅提升。最新变体在 CEC-2017 基准测试中战胜了粒子群算法（PSO）和灰狼算法（GWO）。</div>
+    <p>应用层面最有趣的：无人机协同航迹规划——把蝗虫的群体避障和自组织逻辑映射到多架无人机的航点坐标上——效果比传统算法降低了 20% 以上的飞行总距离。蝗虫在非洲草原上的"经验"，被搬到了军用无人机的大脑里。</p>
+    <p class="source">曾庆丰, 蔡延光等 · 2024 · Badr et al. 2023 AI Review</p>
+  </div>
+</article>
+
+<!-- 123: 中国生物农药治蝗 -->
+<article class="card" data-tags="eco" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">中国每年用生物农药处理 5-10 万公顷蝗虫——目前是全球最大规模的绿僵菌+微孢子虫联合防治实践</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">Sustainability</span></div>
+  </div>
+  <p class="card-snippet">Li 等人详细描述了中国四级行政体系（国家-省-市-县）的蝗虫管理架构。各级不重复——国家负责政策和战略储备、省负责跨市协调、市县负责地面监测和实际喷洒。每年用绿僵菌（Metarhizium acridum）和微孢子虫（Nosema locustae）处理 5-10 万公顷——同时仍在使用化学农药作为紧急手段。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">中国体系的核心优势是<strong>四级响应不打架</strong>——发现问题直接从村级上报到县级技术站、县区级无法处理时自动升级到市级和省级。2020 年云南黄脊竹蝗爆发——调用了 14.27 百万元——建立了 25 个监测点（含昆虫雷达）、38 支应急队、28,000 km² 覆盖——在几周内压住了。这个体系在非洲和中东并不存在——那里的防控往往依赖外部资金和国际组织。</div>
+    <p>但生物农药在基层推广仍有阻力：存储和运输要求高（绿僵菌孢子需要冷链）、见效慢（2-3 周）、农民更信任"一喷就死"的化学农药。政策的成功取决于基层的信任——而信任需要时间。</p>
+    <p class="source">Li, Luo, Liu et al. 2023 · Sustainability 15:6193</p>
+  </div>
+</article>
+
+<!-- 124: 澳大利亚防蝗体系 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">澳大利亚有全球唯一的全职"国家蝗虫委员会"——他们不灭蝗，他们预测蝗，然后让地主自己动手</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">APLC</span></div>
+  </div>
+  <p class="card-snippet">Australian Plague Locust Commission（APLC）是世界上唯一一个全职监控和预报蝗灾的国家级机构。它的策略和中国完全不同：<strong>APLC 只做高空监测和全国预报——不直接下田灭蝗</strong>。灭蝗是土地所有者的法定义务（Biosecurity Act 2015 规定发现三种法定蝗虫必须在 24 小时内报告）。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">澳洲体系的核心是<strong>"预防性控制"</strong>——不是等蝗灾爆发才动手，而是在若虫阶段（band stage）就喷。APLC 用固定翼飞机在偏远内陆做高空巡查——覆盖的区域任何地面车辆都到不了。新南威尔士州的 LLS（Local Land Services）负责省内协调——为符合条件的地主免费提供农药。如果地方压不住了，APLC 会介入大规模喷洒。</div>
+    <p>这个"地主责任制"模型在澳大利亚行得通——因为那里地主少、地块大。但在非洲的小农户场景下完全无法运作——一个种两亩玉米的农民不可能负担飞机灭蝗。所以在不同的大陆，"谁负责灭蝗"这个问题的答案取决于土地制度的底层结构。</p>
+    <p class="source">APLC + NSW Local Land Services · Biosecurity Act 2015</p>
+  </div>
+</article>
+
+<!-- 125: 阿富汗蝗灾与人道主义 -->
+<article class="card" data-tags="eco" data-year="2024">
+  <div class="card-header">
+    <h2 class="card-title">2024年阿富汗——摩洛哥蝗在塔吉克和阿富汗边境两侧同时爆发，但没人能在边境上协调灭蝗</h2>
+    <div class="card-meta"><span class="card-year">2024</span><br><span class="card-journal">FAO</span></div>
+  </div>
+  <p class="card-snippet">阿富汗 2024 年的摩洛哥蝗爆发部分被三月四月的异常低温和降雨压住了一部分——蝗虫卵孵化延迟、若虫分散（寒冷天气下活动减少）——这反而让喷洒更高效。印度捐赠了 4 万升杀虫剂。截止六月——当局已喷洒超过 17,000 公顷。但 FAO 的调查发现了一半以上的蝗虫卵区都在<strong>塔吉克-阿富汗边境线上</strong>。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">五月初——蝗群从塔吉克一侧飞过阿姆河进入了阿富汗昆都士省的小麦产区。两个邻国政府之间缺乏沟通——塔吉克在喷自己的、阿富汗在喷自己的——没有数据共享、没有统一指挥。蝗虫不承认国界线——但农药和防控队伍必须承认。边境线是蝗虫迁徙走廊上<strong>最薄弱的管理节点</strong>。</div>
+    <p>FAO 在挪威政府资助下启动了一个"社区机械灭蝗"项目——让当地农民用手工方式（铲除卵块+压碎若虫）参与防控——这种做法在 21 世纪听起来像回到了唐朝（姚崇的"掘沟治蝗"）。但当化学农药的物流链被切断时——这就是唯一可行的方案。</p>
+    <p class="source">FAO Afghanistan · 2024 年 · 摩洛哥蝗应急项目</p>
+  </div>
+</article>
+
+<!-- 126: 蝗虫DNA条形码 -->
+<article class="card" data-tags="gen" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">用一小段 650bp 的线粒体 DNA 就能鉴定到种——蝗虫的 DNA 条形码正在成为田间鉴定最便宜的方案</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">卡片 #17（云南 17 种蝗虫的 mitogenome）展示了完整线粒体基因组的价值。但在实际应用中——只需一小段 COI 基因（DNA 条形码的标准片段，~650 bp）就可以区分绝大多数蝗虫物种。当前全球公共数据库（BOLD/GenBank）中已有数千条蝗虫 COI 序列——覆盖了大部分害虫种。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">快速鉴定在蝗虫管理中非常实用：同一个属的不同物种——有的吃庄稼、有的只吃杂草——肉眼难辨。用 COI 条形码可以在<strong>若虫阶段</strong>就确认物种——比等它长出成虫和翅膀快 I 得多。国内最新的便携式 qPCR 设备可以在 30 分钟内给出条形码结果——不需要送实验室。</div>
+    <p>挑战在于：COI 条形码在部分近缘种的鉴别力不够——比如 Melanoplus 属（Woller 研究的那个属）——物种分化太快、COI 的突变累积不够。这种情况需要加一段核基因标记（如 ITS2）来提高分辨率。</p>
+  </div>
+</article>
+
+<!-- 127: 蝗虫雷达 -->
+<article class="card" data-tags="eco,meta" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">一束指向天空的雷达波可以探测到 50 公里外的蝗群——不是看见蝗虫，是看见它们翅膀反射回来的"生物杂波"</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">昆虫学雷达不是气象雷达——它用的是特制的波长和极化模式，专门调校来探测空中飞行的昆虫。当蝗群飞过探测范围，雷达屏幕上会出现一片移动的"生物杂波"——研究人员可以从回波的强度、速度和极化特征估算出<strong>蝗虫的数量、飞行高度、移动方向和速度</strong>。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag meta">方法</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">中国在云南 2020 年黄脊竹蝗应急中部署了昆虫雷达——和卡片 #123 的 25 个监测点组成了"天-地"联合预警网。澳大利亚 APLC 的雷达网已经运行了数十年——可以在蝗群到达农业区之前 2-3 天就给出位置预报。但雷达覆盖的瓶颈在于成本——一台专用昆虫雷达价值数十万美元——而且需要专业人员维护和分析数据。</div>
+    <p>下一代方案是将低成本的商用气象雷达改造成"昆虫模式"——通过软件滤波从气象回波中分离出昆虫信号。如果这能实现——全球几千台气象雷达可以瞬间变成蝗虫预警网。</p>
+  </div>
+</article>
+
+<!-- 128: 蝗虫线虫天敌 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">有一种显微镜下才看得见的线虫——它从蝗虫的嘴巴钻进去，在血腔里释放共生细菌——48 小时内蝗虫就死了</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">昆虫病原线虫（EPN，主要是 Steinernema 和 Heterorhabditis 属）不是寄生——它们是"自杀式投毒"。线虫带着共生细菌（Xenorhabdus/Photorhabdus）从蝗虫的口、气门或肛门钻进去——进入血腔后把细菌释放出来——细菌在蝗虫体内疯狂繁殖并产生毒素——通常在 24-48 小时内杀死宿主。然后线虫在死蝗虫体内取食细菌、繁殖、再钻出来寻找下一个目标。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">线虫作为生物农药的优势：<strong>可以大规模生产</strong>（在人工培养基上）、<strong>对脊椎动物完全无害</strong>、<strong>可以在土壤中长期存留</strong>（如果湿度和温度合适，可以存活数周）、<strong>能主动寻找宿主</strong>（不像 Nosema 只能等着被吃）。缺点：极度依赖湿度——在干旱地区无效——而蝗虫最密集的区域恰恰是干旱区。紫外线也快速杀灭土壤表面的线虫。</div>
+    <p>所以线虫最适合在<strong>湿润草地和灌溉农业区</strong>使用——在中国南方和东南亚的水稻田边缘——线虫可能比绿僵菌更有竞争力。</p>
+  </div>
+</article>
+
+<!-- 129: 蝗虫的"晕倒"反应 -->
+<article class="card" data-tags="beh,phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">把一只蝗虫翻过来——它会僵住不动，最长可以保持几分钟——这叫"强直不动"，是最高级别的"装死"</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">强直不动（tonic immobility，也叫 thanatosis）是很多动物的终极防御——在被捕食者抓住后完全僵住，像一个没有生命的物体。蝗虫的强直不动时长可以从几秒到几分钟不等——而且时长在个体间高度可变。卡片 #42 和 #75（旷场焦虑测试）用的就是"强直不动恢复时间"作为"胆小"的量化指标——恢复越快=越大胆。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">强直不动不是"吓晕了"——它是<strong>主动的、消耗能量的行为抑制</strong>。神经回路涉及脑中的 GABA 能和章鱼胺能通路——和脊椎动物的冻结反应用了相似的神经递质系统（趋同进化）。在蝗虫身上——刚吃饱的个体比饿着的个体僵得更久（不急着跑）——感染病原体的个体僵得更久（跑不动）。</div>
+    <p>从实用角度——如果杀虫剂残留削弱了蝗虫的强直不动能力（让它们更早恢复活动=更容易被鸟发现）——这可能是一个隐蔽的"非致死效应"：农药没杀死蝗虫，但让它更早暴露给天敌。这就是生态毒理学的"行为端点"——正在成为农药安全评估的新标准。</p>
+  </div>
+</article>
+
+<!-- 130: 蝗虫与微塑料 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫吃下去的草叶上附着微塑料——塑料颗粒穿过它的肠道，渗入血淋巴，最后出现在卵里</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">微塑料是全球性污染物——已经进入了从南极冰芯到人类胎盘的各个角落。在草地上——微塑料附着在草叶表面或混在土壤中——被蝗虫连同草叶一起吃进去。近期的实验显示：微塑料颗粒可以从蝗虫的肠道穿过肠壁进入血淋巴——然后被运输到各个组织——包括卵巢。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">初步数据：摄入微塑料的蝗虫表现出<strong>肠道上皮细胞损伤、氧化应激标志物升高、食物转化效率下降</strong>。在最高的实验浓度下，产卵量显著减少——微塑料在卵中也检测到了。这意味着微塑料不仅能影响这一代的蝗虫——还能<strong>传递到下一代</strong>。</div>
+    <p>蝗虫在这个问题上的角色是双面的：作为受害者和作为传输者。它把微塑料从土壤/植物带到了食物链的更高层——吃蝗虫的鸟、蜥蜴和蜘蛛摄入的微塑料有一部分来自蝗虫的身体。所以蝗虫在这条传输带上既是"终点"也是"中继站"。</p>
+  </div>
+</article>
+
+<!-- 131: 蝗虫胚胎的热耐受 -->
+<article class="card" data-tags="phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫卵在土壤里扛过了冬天——但如果土壤温度超过 40°C 超过 2 天，卵会全部烤熟</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫卵埋在 5-10cm 深的土壤里——这个深度在大多数气候条件下提供了足够的缓冲。但极端热浪下——尤其是裸露的、没有植被覆盖的土壤——地表温度可以飙到 60°C+——5cm 深处也可能超过 40°C。蝗虫卵对高温的耐受上限大约在 <strong>42-45°C 之间，超过 48 小时 100% 死亡</strong>。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这跟卡片 #2（暖干年蝗虫更多）形成了有趣的张力——暖年确实有利于蝗虫繁殖和若虫存活（更早孵化、更快发育），但<strong>极端热浪——尤其是发生在产卵后、土壤没有植被遮蔽的时期——可以直接杀死埋在地下的卵</strong>。所以"更暖=更多蝗虫"是一条有上限的曲线——超过某个拐点就暴跌。</div>
+    <p>这也意味着气候变化对蝗虫的影响不是单调的——温带地区变暖利好蝗虫、热带地区变热利空蝗虫。全球尺度的净效应取决于这两个方向的"抵消程度"——目前没有任何模型能给出可信的定量估计。</p>
+  </div>
+</article>
+
+<!-- 132: 蝗虫和光污染 -->
+<article class="card" data-tags="eco,beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">路灯下聚集的蝗虫不是在"喜欢光"——它们是被人工光线劫持了导航系统的夜间迁徙个体</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">散居型的沙漠蝗是夜行性的（卡片 #45）。在自然条件下它们靠月光和星光来维持方向——使用天空偏振光和亮度梯度（卡片 #41）。当人工光源出现——路灯、矿井灯、城市光晕——这些夜间飞行者会<strong>被"劫持"——围着光源转圈直到耗尽能量</strong>。这就是为什么你在路灯下经常能看到死蝗虫。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">光污染对蝗虫的影响不是"杀死了多少只"——而是<strong>改变了它们的分布</strong>。被人工光吸引的蝗虫在原本不会停留的区域降落——在一片没有合适食物的水泥地上产卵——或者被聚集在光源附近的捕食者集中猎杀。这种"诱集效应"（attractive sink）对人类密集区的蝗虫密度影响可能被严重低估了。</div>
+    <p>反过来——用特定波长的 LED 灯可能可以"反制"——设计一种蝗虫讨厌的颜色（如红光或紫外弱光）来驱赶它们——这是光学生态学在害虫管理中的新方向。</p>
+  </div>
+</article>
+
+<!-- 133: 蝗虫营养生态位 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">把蝗虫和牛放在一起养——牛的粪便滋养了特定的草类，而这些草恰好是蝗虫最不爱吃的——牛无意中帮了蝗虫的竞争对手</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">这是卡片 #89（牛羊和蝗虫竞争碳氮比）的进一步展开。牛的排泄物不仅改变了土壤养分——还改变了草地的物种组成。牛偏好禾草、拉出高氮粪便——导致不喜欢氮的本地杂草被高氮敏感的快速生长杂草取代——而这些新杂草恰好蝗虫不爱吃。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">结果是一个三向间接互作：牛吃禾草→粪肥改变土壤→植物群落变化→蝗虫的食物减少。在这个间接通路中——<strong>牛和蝗虫之间的"竞争"其实很弱——更重要的效应是牛的排泄物通过改变植物群落间接压缩了蝗虫的生态位</strong>。所以"过度放牧导致蝗灾"不是牛吃光了草、蝗虫没东西吃——而是牛改变了草的种类——把不爱吃的草变成了更不爱的草。</div>
+    <p>这再次验证了卡片 #78（适度放牧优化蝗虫多样性）和 #38（草地生产力决定蝗虫对土壤微生物的影响）——蝗虫生态学的"最佳放牧强度"不是零——也不是最大——是一个中间值。</p>
+  </div>
+</article>
+
+<!-- 134: 蝗虫分子钟 -->
+<article class="card" data-tags="evo,gen" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">用 DNA 突变率当"时钟"往回推算——蝗虫的最早共同祖先大约在 2.5 亿年前的三叠纪出现</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">现代蝗科的分子钟估计——最早分化大约在 2.5 亿年前（晚二叠-早三叠）。这意味着蝗虫的祖先和最早的恐龙差不多同时代——而且在恐龙灭绝后活了下来。花粉化石显示那个时期全球的植被组成从蕨类向裸子植物和早期被子植物转变——蝗虫的祖先可能恰好赶上了这趟"食物变革"。</p>
+  <div class="card-tags"><span class="tag evo">进化</span><span class="tag gen">基因组</span></div>
+  <div class="card-body">
+    <div class="note">蝗科内部的大辐射发生在大约 66 Ma 的白垩纪-古近纪边界之后——和大灭绝同步。恐龙消失后——哺乳动物和鸟类成为新的天敌——蝗虫的颜色多态性、飞行能力、听觉系统（卡片 #57——探测蝙蝠回声定位）——这些关键创新大部分是在新生代这 6500 万年里加速进化的。</div>
+    <p>Melanoplinae 亚科（Woller 研究对象）的分化时间大约在 30-40 Ma 前——与北美西部从湿润森林向干旱草原的气候转变同步。换句话说——Woller 研究的那些"飞行丧失"蝗虫——它们的祖先在几千万年前就开始了从"飞"到"跳"的转型。</p>
+  </div>
+</article>
+
+<!-- 135: 蝗虫体表微生物组 -->
+<article class="card" data-tags="gen,eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的体表不只是一个甲壳——它表面住着一层肉眼看不见的微生物膜，其中有些细菌能产生抗真菌化合物</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">在研究肠道微生物（卡片 #24、#25）多年之后，研究者终于开始关注蝗虫的<strong>体表微生物组</strong>——角质层表面的细菌和真菌群落。这些微生物不是随机粘上去的——它们形成了一个稳定的、可重复的群落结构——而且在实验室里传代后仍然保持稳定。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">最有趣的发现是：体表微生物组中<strong>某些 Bacillus 菌株能产生 diffusible 的抗真菌化合物</strong>——在琼脂平板上抑制白僵菌和绿僵菌的生长。这暗示了蝗虫的体表微生物组可能在<strong>被动免疫防御</strong>中扮演角色——角质层上的"好细菌"在物理空间和化学活性上都抑制了"坏真菌"的定殖。</div>
+    <p>如果大规模的化学农药杀死了这些保护性细菌——蝗虫实际上可能<strong>更容易被次生真菌感染</strong>。亚致死剂量的杀虫剂可能从"杀虫"变成了"帮虫"——通过破坏它的体表防线。这是一个刚刚被打开的研究方向。</p>
   </div>
 </article>
 
