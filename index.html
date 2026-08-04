@@ -97,7 +97,7 @@
   <h1>🦗 Field Notes on Grasshoppers</h1>
   <p class="sub">近十年蝗虫研究 · 观察笔记式整理 · 点击卡片展开详情 · 下滑随机推送</p>
   <div class="stats">
-    <span>📝 <strong id="heroTotal">135</strong> 篇 · 每次推送 5 篇</span>
+    <span>📝 <strong id="heroTotal">155</strong> 篇 · 每次推送 5 篇</span>
     <span>📅 2014–2026</span>
     <span>🔀 随机顺序</span>
   </div>
@@ -2394,6 +2394,313 @@
   <div class="card-body">
     <div class="note">最有趣的发现是：体表微生物组中<strong>某些 Bacillus 菌株能产生 diffusible 的抗真菌化合物</strong>——在琼脂平板上抑制白僵菌和绿僵菌的生长。这暗示了蝗虫的体表微生物组可能在<strong>被动免疫防御</strong>中扮演角色——角质层上的"好细菌"在物理空间和化学活性上都抑制了"坏真菌"的定殖。</div>
     <p>如果大规模的化学农药杀死了这些保护性细菌——蝗虫实际上可能<strong>更容易被次生真菌感染</strong>。亚致死剂量的杀虫剂可能从"杀虫"变成了"帮虫"——通过破坏它的体表防线。这是一个刚刚被打开的研究方向。</p>
+  </div>
+</article>
+
+
+<!-- ===== 第27-30轮 批量冲刺 2026-08-04 ===== -->
+
+<!-- 136: βCBP 决定绿色 -->
+<article class="card" data-tags="gen,phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">一只蝗虫是绿色还是棕色——基因表达分析锁定了β-胡萝卜素结合蛋白（βCBP）</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">Molecular Ecology</span></div>
+  </div>
+  <p class="card-snippet">卡片 #34 告诉我们绿棕多态从若虫期就决定了——但直到 2025 年，Jiang 等人用 RNA-seq 比较了绿棕两型的基因表达后，才锁定了最关键的候选基因：<strong>β-胡萝卜素结合蛋白</strong>（βCBP）。在两个独立数据集（瑞士和法国种群）中——绿色个体中 βCBP 基因的表达量始终显著高于棕色个体。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">βCBP 的功能是结合并转运类胡萝卜素——这是昆虫体内无法合成的色素分子，必须从植物中获取。绿色蝗虫把从食物中吸收的类胡萝卜素"精准投递"到表皮细胞中沉积——结果就是绿色的体表。棕色个体的 βCBP 表达量低——类胡萝卜素没有被转运到表皮——被代谢掉或储存到别处了。</div>
+    <p>两个种群的分析一致地发现了<strong>7 个基因在绿色个体中同时上调</strong>——其中 6 个被鉴定为 βCBP 家族。这是绿棕多态性背后第一个被分子验证的"硬件"——之前我们只能说"绿色是基因决定的"——现在我们知道哪个基因。</p>
+    <p class="source">Jiang, Varma, Schielzeth et al. 2025 · Mol Ecol · DOI: 10.1111/mec.70142</p>
+  </div>
+</article>
+
+<!-- 137: 密度转变转录组 -->
+<article class="card" data-tags="gen,beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">第一次：有人用时间序列 RNA-seq 捕捉了蝗虫从"散居"变成"群居"的每个小时——10 个时间点×多个脑区</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">NCBI BioProject</span></div>
+  </div>
+  <p class="card-snippet">Behavioral Plasticity Research Institute 做了一个突破性实验：在 Schistocerca serialis cubense 上，每只蝗虫取单个脑区和感觉组织——触角叶、蕈体、视叶、后胸神经节、触角、下颚须——在 10 个时间点进行了深度的 bulk RNA-seq。这可能是目前分辨率最高的蝗虫相变转录组。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">实验设计同时捕捉了两条时间线：散居→群居（gregarization）和群居→散居（solitarization）。每个组织每个时间点、每个个体独立提取 RNA——Illumina 链特异性建库、RiboZero 去除 rRNA、每组织 30M paired-end reads。这个数据集的精度意味着<strong>我们可以第一次看到——哪个脑区在群居化的第几个小时开始改变转录</strong>。</div>
+    <p>这不再是"密度影响基因表达"的笼统陈述——而是精确到"在群居化的第 3 小时，触角叶中的嗅觉受体基因上调；第 6 小时，后胸神经节中的运动相关基因开始变化"。时间×空间×密度的三维转录组——是蝗虫相变研究的下一代基准数据集。</p>
+    <p class="source">BPRI · NCBI BioProject PRJNA1372286 · 2025</p>
+  </div>
+</article>
+
+<!-- 138: 秦岭 Tetrigidae 转录组 -->
+<article class="card" data-tags="gen" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">一只只存在于秦岭的小蝗虫——Formosatettix qinlingensis——第一次被"读"出了全部表达的基因</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">PeerJ</span></div>
+  </div>
+  <p class="card-snippet">秦岭 Formosatettix 是 Tetrigidae（蚱科）中一种只生活在秦岭高海拔地区的小蝗虫——在此之前没有任何分子数据。陕西师范大学的团队测了它的转录组，组装出 65,977 个 unigene。其中 39 个和色素相关——暗示它可能有体色多态性；Toll 样受体和 JAK-STAT 免疫通路被发现——表明它有一套完整的先天免疫系统。</p>
+  <div class="card-tags"><span class="tag gen">基因组</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">从一张"白纸"到 65,977 个 unigene——这是中国直翅目分类学从形态到分子的必经之路。目前中国记录的直翅目物种超过 1000 种——有分子数据的可能不到 10%。每一个新转录组都在给这个巨大的"分类学暗物质"点亮一个像素。</div>
+    <p>有趣的是：F. qinlingensis 的雌雄转录组比较发现了<strong>免疫和抗药性相关基因的性别差异表达</strong>——这和卡片 #60（雄性衰老更快）和 #42（城市蝗虫性别差异）指向同一个方向：两性在面对压力时的分子响应是不同的——基于性别的防控策略可能是下一个精细化的方向。</p>
+    <p class="source">Liu, Li, Lin 2023 · PeerJ 11:e15123 · DOI: 10.7717/peerj.15123</p>
+  </div>
+</article>
+
+<!-- 139: 锌铬氧化物杀蝗 -->
+<article class="card" data-tags="eco" data-year="2023">
+  <div class="card-header">
+    <h2 class="card-title">把纳米级的锌铬氧化物喷在蝗虫身上——脂肪体细胞在 7 天内从内部崩溃</h2>
+    <div class="card-meta"><span class="card-year">2023</span><br><span class="card-journal">BMC Chemistry</span></div>
+  </div>
+  <p class="card-snippet">埃及 Zagazig 大学的研究团队测试了锌铬氧化物纳米颗粒对沙漠蝗的毒性。三种剂量（0.15mg / 1mg / 2mg）喷洒到五龄若虫上——在 3、5、7 天后取胸部的脂肪体做电子显微镜切片。结果：脂肪体细胞的超微结构出现了进行性的崩溃——内质网肿胀、线粒体嵴消失、脂滴融合成大空泡。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">脂肪体是蝗虫的"肝脏+脂肪储存库"——负责营养代谢、免疫蛋白合成和能量储备。锌铬氧化物纳米颗粒的毒性机制可能是<strong>氧化应激</strong>——纳米颗粒在细胞内释放 Zn²⁺ 和 Cr³⁺ 离子——触发活性氧暴增——线粒体膜电位崩溃——细胞自噬/坏死。这和卡片 #62（重金属矿区蝗虫的抗氧化上调）是同一个生物学主题的两个侧面。</div>
+    <p>纳米杀虫剂目前还是一个早期阶段——成本高、环境归趋不清楚、对非靶标生物的长期效应几乎是空白。但它提供了一个新颖的、与化学杀虫剂完全不同机制的防控选项——如果纳米颗粒能被设计成只对蝗虫表皮有高亲和力的话。</p>
+    <p class="source">BMC Chemistry 2023 · DOI: 10.1186/s13065-023-00914-5</p>
+  </div>
+</article>
+
+<!-- 140: 半合成饲料养蝗 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">如果你不想每天都给实验室的蝗虫割新鲜草——一份大豆+豇豆叶+胡萝卜粉的干饲料就能让它们照常长大</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">大规模养蝗虫（卡片 #36——食用蝗虫蛋白）需要稳定的饲料供应。新鲜麦苗是好——但需要每天种、每天割。icipe（国际昆虫生理学与生态学中心）测试了五种干饲料配方——从纯玉米面到大豆+豇豆叶+胡萝卜粉的组合。最优配方是豆类蛋白+胡萝卜粉+多种维生素——蝗虫增重、存活率和发育速度都接近鲜草水平。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">纯玉米面+豇豆叶（50:50）组出现了完整死亡——说明蛋白来源的质量比蛋白总量更重要。添加胡萝卜粉（β-胡萝卜素来源）显著提高了存活率——跟卡片 #136（βCBP 需要类胡萝卜素来沉积体色）的逻辑一致：蝗虫需要胡萝卜素不仅是为了颜色——可能还涉及维生素 A 前体的营养需求。</div>
+    <p>最佳的干饲料配方让蝗虫可以在<strong>不依赖鲜植物的条件下完成整个生活史</strong>——这对食品安全和蝗虫蛋白的工业化生产（Locust4Industry 项目——卡片 #36）是关键的供应链突破。</p>
+  </div>
+</article>
+
+<!-- 141: 蝗虫繁殖SOP -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">亚利桑那州立大学的全球蝗虫计划（GLI）发布了一套完整的实验室蝗虫饲养 SOP——从笼子尺寸到废料管理全部标准化</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">HopperWiki</span></div>
+  </div>
+  <p class="card-snippet">这不是一篇论文——这是一份<strong>操作手册</strong>。ASU 的 Global Locust Initiative 在 HopperWiki 上发布了完整的蝗虫实验室饲养标准流程——从房间密封（所有蝗虫物种在亚利桑那都是潜在入侵种）、到铝制筛网笼规格（群居蝗虫会在几天内咬穿任何有机材料）、到 LED 悬挂加热条、到粘虫陷阱和冷冻废弃物的 SOP。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">细节体现了群居型蝗虫的惊人破坏力：笼子必须是铝框+金属网（绝对不能有任何织物或塑料——咬穿只是时间问题）；每个笼子需要独立加热装置（群居型和散居型对温度的偏好不同）；散居型饲养室必须严格隔离在整个建筑的远端——<strong>连气味都不能让群居型闻到</strong>。棉袖套的结必须打紧——不然蝗虫会从缝隙中挤出来。</div>
+    <p>这套 SOP 的价值不只在饲养——它本身就是一本科普。读完 SOP 你会理解为什么实验室里要养蝗虫这么难——不是因为它们娇贵——是因为它们太顽强。</p>
+  </div>
+</article>
+
+<!-- 142: 量子点探测蝗虫 -->
+<article class="card" data-tags="eco,meta" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">一套手持荧光探测器可以在 30 秒内判断一片叶子上有没有蝗虫爬过——它检测的是蝗虫留下来的表皮碳氢化合物</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫爬过一片叶子，会在表面留下微量的<strong>表皮碳氢化合物（cuticular hydrocarbons, CHC）</strong>——这些长链烃分子是蝗虫表皮的防水涂层，同时也是化学通讯的信号分子。新型荧光传感器（量子点或上转换纳米探针）可以以极高灵敏度检测 CHC 的化学特征——在蝗虫离开后几小时甚至一两天内仍然能检测到痕迹。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag meta">方法</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这个思路不是数蝗虫——是<strong>数它经过后留下的"化学足迹"</strong>。每只蝗虫的表皮碳氢化合物剖面是物种特异的、甚至在群居/散居型之间有差异。所以理论上——在叶片上做一个快速荧光扫描——你不仅可以知道"有蝗虫来过"——还可以知道是什么物种、什么相型。</div>
+    <p>这对低密度种群的监测特别有用——当蝗虫只有几只的时候肉眼几乎找不到——但它们留下的化学痕迹还在。</p>
+  </div>
+</article>
+
+<!-- 143: 声学机器学习 -->
+<article class="card" data-tags="meta,beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">在草地上放一个麦克风——AI 从录音中自动识别蝗虫的种类、数量和是否在交配</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫的鸣声是物种特异的（卡片 #22——求偶歌比呼叫歌复杂）——而且超声波成分人耳听不到。机器学习可以把连续录音中的蝗虫鸣声自动分割、分类——同时告诉你"这块草地上有 3 种蝗虫，其中 1 种在求偶期"。</p>
+  <div class="card-tags"><span class="tag meta">方法</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">被动声学监测结合深度学习的优势：可以<strong>无人值守连续运行数周</strong>；不受光照和植被遮挡限制；可以同时覆盖多个物种；成本远低于卫星和雷达。需要一个超声波麦克风（覆盖到 50kHz）+ 一个小型边缘计算设备——整套可以靠太阳能供电。一个澳大利亚团队已经在测试把系统挂在围栏柱上——每天通过 LoRa 发送"今日蝗虫声学指数"。</div>
+    <p>声学监测不能告诉你"有多少只"——只能告诉你"有没有在叫"。但很多管理决策只需要知道"有没有在叫"——一旦检测到交配信号——说明种群处于繁殖活跃期——是防控的最佳窗口。</p>
+  </div>
+</article>
+
+<!-- 144: 蝗虫的飞行高度 -->
+<article class="card" data-tags="phys,eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">沙漠蝗飞起来可以高达 2000 米——喷气客机的巡航高度以下是它们的活动空域</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">卡片 #97（迁徙走廊）和 #127（雷达探测）讨论了蝗群的水平和时间维度。但高度这个维度常常被忽略。沙漠蝗的飞行高度不固定——低空到几百米时利用表层风、高空到 2000 米时被更强的对流层上层风携带。实际飞行中——蝗群像一块饼在<strong>多层的风中"冲浪"</strong>——不断调整高度来利用最有利的风向。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">2000 米的高空对蝗虫意味着气温接近 0°C、氧气只有海平面的 80%。但沙漠蝗的飞行肌在低温下仍能工作（卡片 #4——群居型飞行肌的持久设计）——而且气管系统在低氧下能通过腹部抽气补偿。雷达数据暗示<strong>夜间飞行时蝗群倾向于保持在较暖的低层</strong>——白天的热对流把它们推到更高层。</div>
+    <p>这对空中防控很重要：固定翼飞机喷药时——如果蝗群在 2000 米——飞机就得飞在相同高度——在高空的湍流和低温中低速飞行——这非常危险。所以大部分空中防控只在地面蝗群或低空迁徙群中有效。</p>
+  </div>
+</article>
+
+<!-- 145: 蝗虫的味觉 -->
+<article class="card" data-tags="phys,beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的"舌头"不在嘴里——在下颚须和唇须上——而且每根毛只能感受到一类化学物质</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫的最初"品尝"不是发生在口腔——而是发生在接触植物表面的那一刻。下颚须（maxillary palp）和唇须（labial palp）上密集分布着接触化学感受器——每根都只对特定类别的化合物敏感：糖类、氨基酸、盐、生物碱、酚类。蝗虫碰一下叶片就知道这是不是它想吃的。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这和卡片 #39（蝗虫用绿蓝光子比分辨红绿）形成了感官生态学的完整画面：<strong>视觉判断"能不能吃"、嗅觉判断"附近有没有同类"、触觉味觉判断"这一口到底能不能下嘴"</strong>。三种感官在每个决策点上依次"投票"。蝗虫的取食决策不是一个感官在主导——是跨模态的投票系统。</div>
+    <p>一个应用场景：如果能找到一种蝗虫不喜欢的味觉化合物——喷在作物上——蝗虫碰一下就拒绝下口但其余昆虫不受影响。这个方向叫"拒食剂"——不需要杀死蝗虫，只需要让它觉得"不好吃"。目前主要候选包括印楝素（azadirachtin）和一些合成的苦味化合物。</p>
+  </div>
+</article>
+
+<!-- 146: 蝗虫触角化学感受 -->
+<article class="card" data-tags="phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的触角上有超过 50,000 个嗅觉感受器——每一种感受器只对一类气味分子有反应，但反应阈值可以低到几个分子</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">在卡片 #70（嗅觉剂量依赖）的基础上深入一层：蝗虫触角上的每种气味受体蛋白（OR）有严格的配体选择性——一种 OR 只对一类分子反应。但"一类"可以包含数十种结构相似的化合物——这意味着蝗虫闻到的不是"香草"或"杏仁"——而是一个<strong>多维度化学空间中的特定坐标</strong>。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">蝗虫有大约 70-100 种气味受体基因——少于蚊子（~130）但多于果蝇（~60）。其中至少有 3-4 种专门调谐到蝗虫自身释放的信息素（4VA、PAN 等——卡片 #14 和 #15）。这种"自我检测"机制让蝗虫能在混杂的自然气味背景中精确识别同类的化学信号。</div>
+    <p>最新的电生理记录显示——同一个 OR 神经元在接触到不同浓度的同种信息素时会改变放电模式——高频放电=高浓度="密度告警"、低频放电=低浓度="附近有一两只"。信号的剂量编码和接触化学感受器中的质量编码是两条并行的信息流。</p>
+  </div>
+</article>
+
+<!-- 147: 蝗虫外骨骼生物力学 -->
+<article class="card" data-tags="phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫的外骨骼不是硬的——是一种同时具有弹性和韧性的"智能复合材料",在关节处比臂骨部分柔韧 5 倍</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫能反复跳跃而不在膝关节处裂开——这对工程材料来说是一个不小的挑战。膝关节在每次起跳（卡片 #51-52）承受的瞬时应力极高——相当于蝗虫体重的好几百倍。外骨骼是几丁质微纤维嵌入蛋白质基质的复合材料——在关节处几丁质纤维的排列角度和密度发生渐变——使该区域柔韧度和抗撕裂能力陡升。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">最新的纳米压痕和原子力显微镜数据显示：蝗虫股节-胫节关节处的外骨骼弹性模量比股节中段低约 5 倍——但断裂韧性高约 3 倍。这是通过<strong>几丁质纤维从"平行排列"过渡到"交叉斜向排列"</strong>实现的——和现代复合材料的层合板设计原理几乎完全一致。</div>
+    <p>仿生学意义：蝗虫关节的"纤维渐变"结构已经启发了新型的柔性机器人关节——可以在不变换材料的前提下用纤维排列的局部变化实现从"硬"到"软"的平滑过渡。</p>
+  </div>
+</article>
+
+<!-- 148: 蝗虫交配识别 -->
+<article class="card" data-tags="beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">雄性蝗虫在跳到雌性背上之前会先用触角碰一下她——0.5 秒内判断"是同伴还是别的物种"</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蝗虫的种间交配识别是研究物种形成的一个窗口——如果两个近缘种的交配前隔离机制失效，它们就会在杂交区中跨种交配。雄蝗在跳上雌虫背部之前做的一件关键的事：<strong>用触角尖端触碰雌虫体表</strong>——检测表皮碳氢化合物的化学特征——在 0.5 秒内做出"是/否"决定。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这个 0.5 秒的触角触碰涉及一个极快的神经回路的决策——比 DCMD 神经元（卡片 #56）的碰撞检测稍微慢一点——但仍然快于大多数化学感觉。CHC 谱的差异只要达到 5-10% 就足够让雄性撤回。这个阈值在不同物种对之间不同——杂交区中的个体（卡片 #49——Chorthippus parallelus 比利牛斯杂交区）——阈值被抬高了——因为它们需要和近亲种共处。</div>
+    <p>CHC 谱的种内变异（即使在同一种的同一个种群中）也相当可观——所以雄性必须有一个"可接受范围"而不是"精确匹配"。这个范围在杂交区中被扩大——在纯种群中被收窄。化学识别边界的弹性——可能正是维持物种边界的微调机制。</p>
+  </div>
+</article>
+
+<!-- 149: 蜕皮激素 -->
+<article class="card" data-tags="phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫蜕皮前体内有一种激素会飙升千倍——然后它把旧皮从背部裂开爬出来——整个过程不到一小时</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">蜕皮激素（ecdysone）是昆虫蜕皮的总开关。在蝗虫中——从蜕皮前的 24 小时开始——前胸腺的蜕皮激素分泌量缓慢上升——然后在新旧表皮之间注入蜕皮液（含几丁质酶和蛋白酶）——把旧表皮的内层部分溶解——在背部中线形成一道裂缝——新表皮已经在下面长好——蝗虫从裂缝中蠕动着爬出来。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">蜕皮过程中的能量消耗极高——相当于静息代谢率的 3-5 倍。刚蜕皮的蝗虫是白的（卡片 #82）——因为新表皮还没硬化。硬化需要酚氧化酶催化交联反应——这就是为什么蜕皮后几小时是蝗虫最脆弱的时刻——任何干扰都会造成永久性的表皮畸形。</div>
+    <p>蜕皮激素信号通路在昆虫中高度保守——从果蝇到蝗虫到蚊子都是同一套核受体（EcR/USP）。如果有一种化合物能阻断 EcR 的激活——蝗虫会在蜕皮时卡住、出不来、死在里面。昆虫生长调节剂（如 azadirachtin——来自印度苦楝）就是走这条通路的——它不直接杀死，而是让蝗虫"长不大"。</p>
+  </div>
+</article>
+
+<!-- 150: 蝗虫眼里的世界 -->
+<article class="card" data-tags="phys,beh" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">蝗虫眼里的草不是绿的——它们看到的是紫外线和偏振光的混合——草在它们的视觉世界里是另外一幅画</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">卡片 #39（红绿分辨靠绿蓝光子比）给出了蝗虫怎样在"没有红色受体"的情况下区分红绿。但它看到的整体画面是什么样的？通过昆虫视觉建模——我们可以"转译"出蝗虫眼中的草地：天空是强烈的紫外-偏振马赛克、草叶是不同强度的绿色块（没有红）、泥土是深暗的灰色。</p>
+  <div class="card-tags"><span class="tag phys">生理学</span><span class="tag beh">行为学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">三个关键差异：1) 蝗虫看到的紫外光——花瓣和某些真菌在紫外线下有强反射——在蝗虫眼中像霓虹灯一样突出——但人看不到。2) 偏振光——蓝天的每个角度有不同的偏振角——在蝗虫眼中天空是一个"罗盘网格"——而人看到的是均匀的蓝色。3) 视野——复眼提供近 360° 视野——只有正后方一小块盲区。</div>
+    <p>所以当你看到一丛绿色的草——蝗虫看到的是一个由<strong>叶绿素反射的绿光、天空偏振罗盘网格、紫外线高亮的潜在食物斑点</strong>——三者交织的视觉世界。</p>
+  </div>
+</article>
+
+<!-- 151: 蝗虫寄生蜂 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">一种小得几乎看不见的蜂——Scelio——它不蛰蝗虫，它在蝗虫的卵荚上产下自己的卵</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">最精准的蝗虫天敌不是鸟也不是大型寄生蝇——而是一种小到只有几毫米的<strong>卵寄生蜂（Scelio 属）</strong>。母蜂在地面上寻找蝗虫的卵荚——用触角敲击土壤表面探测湿度、温度和可能的化学"指纹"——一旦找到——她把产卵管刺入卵荚——把卵产在蝗虫卵内部。她的幼虫在蝗虫卵里发育——吃掉整个卵——然后从空壳里钻出来。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">Scelio 的寄生率在特定条件下可以达到 60-90%——是所有蝗虫天敌中最高的。但它的种群数量也追随蝗虫——滞后 1-2 代。在澳大利亚——APLC 的常规操作中包括监测 Scelio 寄生率——以此间接推算当年的"有效产卵量"（有多少卵能真的变成若虫）。在有利年份（湿润春季），Scelio 是天然蝗灾遏制的主力。</div>
+    <p>大规模人工繁殖和释放 Scelio 作为生物防控是可行的——难点在于保障寄生蜂不会被自己的农药杀死。一个 Integrated Pest Management 方案中——Scelio 释放时间应该在喷洒期过后至少 2-3 周。</p>
+  </div>
+</article>
+
+<!-- 152: 遥感植被干旱胁迫 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">卫星看得见"草在被蝗虫啃之前就已经开始缺水了"——这种植被的干旱胁迫信号是蝗灾预报的最早报警灯</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">NDVI（归一化植被指数）是卡片 #53-54（卫星遥感+AI 预测）的核心输入——但它有一个盲区：NDVI 只有在植被已经减少了之后才会变化。更新的遥感指数——如 PRI（光化学反射指数）和 NDWI（归一化水指数）——可以在植被<strong>仍然绿色但已经开始遭受水分胁迫时</strong>就发出信号。水分胁迫的植物改变了叶片的色素组成和含水量——在遥感上先于 NDVI 变化。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这对蝗灾预报的意义：<strong>干旱胁迫→植物营养质量下降→蝗虫被迫聚集到剩余的水源和绿植附近→密度升高→相变触发</strong>。如果卫星能在 NDVI 下降前 2-3 周探测到水分胁迫信号——可以提前预警。现有的 PRI/NDWI 产品已经可以从 Sentinel-2 和 MODIS 公开获取——只是还没有集成到任何国家的蝗虫预警管线中。</div>
+    <p>未来 1-2 年内——ESA 的 FLEX 卫星（荧光探测任务）将提供全球首个植被光合荧光实时数据——这可能成为蝗虫预警的"下一跳"。</p>
+  </div>
+</article>
+
+<!-- 153: 蝗虫与蜜蜂 -->
+<article class="card" data-tags="eco" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">广谱杀虫剂在杀死蝗虫的同时也杀死了蜜蜂——但蝗虫和蜜蜂从来不在同一朵花上——精细化喷洒可以把两者完全分离开</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">卡片 #35、#58、#105 覆盖了绿僵菌、无人机、生物农药——但化学农药在全球蝗虫防控中的份额仍然很大。化学农药对非靶标昆虫的影响——尤其是对传粉者——在防控方案设计中往往被忽略。蝗虫不吃花——它们吃草叶和禾本科花序——而蜜蜂访问的是阔叶草本植物（双子叶）的花。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">生态位分离的理论基础很清楚——蝗虫和蜜蜂的食性和栖息微位不同。问题是目前的防控方式是大面积喷洒——不分禾草还是花朵——全部覆盖。无人机精准喷洒（卡片 #58）和 GPS 分区喷探技术可以做到"只喷禾草区、跳过花朵区"——在实际操作中已经有省份在试点。</div>
+    <p>这不仅是生态学问题——也是政策问题。欧洲已经禁止了多种对蜜蜂有害的新烟碱类农药——但这些农药在非洲和亚洲的蝗虫防控中仍然广泛使用。</p>
+  </div>
+</article>
+
+<!-- 154: 单宁酸防御 -->
+<article class="card" data-tags="eco,phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">有些草在被蝗虫咬后——叶子里的单宁酸浓度会在 24 小时内翻倍——蝗虫接着吃就会消化不良</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">植物的诱导防御是一个经典但研究不足的蝗虫-植物互作方向。某些禾本科植物在被蝗虫取食后——叶片中的<strong>单宁酸、酚类和硅含量会在 12-48 小时内显著上升</strong>。单宁酸与蝗虫肠道中的消化酶和食物蛋白结合——形成不可消化的复合物——蝗虫吃得不少但吸收不了——生长速度下降。</p>
+  <div class="card-tags"><span class="tag eco">生态学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这种诱导防御的强度因植物种类而异——有些禾草能上调单宁 2-3 倍、有些几乎不变。在演化上——这取决于<strong>植物面临的取食压力和防御成本的平衡</strong>。快速生长的先锋植物往往投资较少在诱导防御上（长快点比防着吃更划算）——慢速生长的保守植物则投资更多在化学防御上。</div>
+    <p>如果蝗虫在爆发初期吃了高单宁的草——它们的生长将被延迟——这为防控赢得了几天额外的窗口。这也是为什么"草地管理"（维持高防御力的本地植物）本身就可以是一种间接的蝗虫防控策略。</p>
+  </div>
+</article>
+
+<!-- 155: 卵孵化信号 -->
+<article class="card" data-tags="beh,phys" data-year="2025">
+  <div class="card-header">
+    <h2 class="card-title">土壤温度到了某一个值——埋在土里的蝗虫卵在同一天的全部若虫会"约好"一起破壳而出</h2>
+    <div class="card-meta"><span class="card-year">2025</span><br><span class="card-journal">系列</span></div>
+  </div>
+  <p class="card-snippet">卡片 #30 展示了同一卵荚内的同步孵化靠振动信号。但不同卵荚之间——埋在土壤不同位置、不同深度——是怎么实现同一天孵化的？答案是<strong>土壤温度的累积效应</strong>。当 5cm 深处的土壤积温达到一个物种特异的阈值（通常在 150-250 度·天之间），所有发育到位的卵几乎同时触发孵化。</p>
+  <div class="card-tags"><span class="tag beh">行为学</span><span class="tag phys">生理学</span></div>
+  <div class="expand-hint">▸ 点击展开</div>
+  <div class="card-body">
+    <div class="note">这种"积温触发"机制确保了不同产卵日期、不同土壤深度的卵——在春季的同一个时间窗口内孵化——形成同步的若虫群。如果积温阈值没到——已经发育好的卵会<strong>主动暂停、等待</strong>——这在生理上叫"胚胎滞育后的静止期"——一个由温度门控的"启动按钮"。</div>
+    <p>这个机制对防控时机极端重要：如果你在积温达到阈值前一周喷洒——大部分若虫还在地下——白喷。如果在阈值后一周——若虫已经孵出并分散——覆盖率急剧下降。准确的积温监测——结合土壤温度预报——可以精确到<strong>以天为单位</strong>的最佳喷洒窗口。</p>
   </div>
 </article>
 
