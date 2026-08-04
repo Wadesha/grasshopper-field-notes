@@ -122,7 +122,7 @@ assert min(new_bodies) >= 1000   # 历史目标线；至少 >= 900
 - **Python（managed）**：`C:\Users\wade\.workbuddy\binaries\python\versions\3.13.12\python.exe`
   - 注意路径含**空格**与中文，Bash 调用须用引号：`cd "/c/Users/wade/OneDrive/文档/grasshopper"`
 - **远端**：`https://github.com/Wadesha/grasshopper-field-notes.git`，分支 `main`，GitHub Pages 自动部署。
-- **推送方式**：本机 Git Credential Manager 已存有效 Wadesha 凭据，`git push origin main` 直接成功（不需 PAT）。推送前必须 `grep` 确认待推文件不含 `ghp_`。
+- **推送方式**：本机 Git Credential Manager 已存有效 Wadesha 凭据，`git push origin main` 直接成功（不需 PAT）。推送前必须 `grep` 确认待推文件不含任何 GitHub 个人访问令牌（PAT，形如 ghp 开头的一段凭证）。
 
 ---
 
