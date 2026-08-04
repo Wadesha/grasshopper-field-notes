@@ -73,7 +73,8 @@
 
 ### 部署
 - 仓库：`Wadesha/grasshopper-field-notes`
-- Pages 源：`master` 分支根目录
+- 默认分支：`main`
+- Pages 源：`main` 分支根目录
 - URL：`https://wadesha.github.io/grasshopper-field-notes/`
 
 ---
